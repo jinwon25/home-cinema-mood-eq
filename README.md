@@ -1,52 +1,80 @@
-# 🍿 POFLIX: AI 기반 홈 시네마 음향 자동 최적화 시스템
-> **Scene-Aware Smart Audio Optimization** > 당신의 거실을 완벽한 영화관으로. 공간의 구조와 영상의 감정을 AI가 동시에 분석하여 최적의 홈 시네마 음향을 자동으로 세팅해 주는 시스템입니다.
+# 홈 시네마 음향 자동 최적화 — POFLIX
 
-## 📌 Project Background & Necessity
-* **공간이 만드는 음향 한계:** 한국형 LDK(Living-Dining-Kitchen) 구조는 비대칭 음향 환경을 초래하며, 벽과 가구 반사로 인한 음질 왜곡(Booming)이 발생합니다.
-* **콘텐츠 시청 환경의 변화:** OTT의 확대로 집이 주요 시청 공간이 되었으나, 과도한 배경음과 효과음으로 인해 대사 전달력이 저하되어 **사용자의 85%가 자막에 의존**하고 있습니다.
-* **기존 솔루션의 한계:** Sonos, Apple HomePod 등 기존 기기들은 1회성 공간 측정(정적 EQ)에 그치며, 영상의 상황(액션, 대화 등)에 맞춘 실시간 동적 제어는 불가능합니다.
+방의 공간 음향과 영상의 감정을 AI가 동시에 분석해 홈 시네마 음향을 자동으로 세팅하는 시스템.
+Scene-Aware Smart Audio Optimization.
 
-## ✨ Key Features & Architecture
-본 프로젝트는 크게 **[기술 1] 공간 인식**과 **[기술 2] 콘텐츠 인식**의 투 트랙(Two-Track)으로 작동합니다.
+## 진행 기간
+2026.02 ~ 2026.04 (POSCO AI·BigData Academy 32기 C4 팀 프로젝트)
 
-### 1. 기술 1: 공간 인식 기반 음향 최적화 (Spatial Audio Optimization)
-휴대폰 센서와 1회의 스윕(Sweep) 음원 재생만으로 방의 음향 지문을 파악하고 최적의 스피커 배치를 추천합니다.
-* **공간 및 음향 데이터 수집:** 스마트폰 LiDAR/RoomPlan으로 3D 지도를 생성하고, 테스트 음원(Sweep)을 녹음.
-* **멀티모달 음향 예측 (xRIR):** * 공간을 보는 눈 (ViT): 방의 형태와 구조 파악
-  * 소리를 듣는 귀 (ResNet-18): 울림의 패턴과 잔향 분석
-  * Cross-Attention 융합을 통해 1024차원의 공간 음향 지문(xRIR) 예측.
-* **최적 배치 가이드 & 자동 보정:** 물리적으로 음향이 가장 훌륭한 5곳의 좌표를 추천하고, 배치 후 최종 Inverse EQ를 계산하여 공간 보정을 마무리합니다.
+## 역할
+4인 팀 · 콘텐츠 인식 동적 EQ(Mood-EQ) 워커와 평가 인프라 담당
 
-### 2. 기술 2: 콘텐츠 인식 기반 자동 EQ (Content-Aware Dynamic EQ)
-영상 장면의 분위기와 대사를 분석하여 실시간으로 사운드를 믹싱합니다.
-* **실시간 감정(Mood) 분석:** X-CLIP과 PANNs 모델을 활용하여 영상의 시각/청각적 특징을 추출하고, Valence-Arousal(V/A) 회귀 모델을 통해 감정 상태를 분석합니다.
-* **동적 EQ 및 대사 보호 (Ducking):** 폭발음 등 배경음이 커지는 긴박한 씬에서도 대사 명료도를 잃지 않도록, 객체 분리 기반의 동적 10-band EQ 제어를 수행합니다.
+- Mood-EQ inference worker 1차 구현 — V/A 회귀 결과를 10-band 동적 EQ로 매핑
+- MUSHRA 블라인드 청취 평가 큐레이션 모드·simple_player UI 설계
+- A/B 즉시 전환 + JND(Just-Noticeable Difference) 캘리브레이션 도구
+- 씬 라벨 자동·수동 검수 파이프라인
+- V3.5.7 최종 파이프라인 채택 결정 (M/S, Sidechain Ducking, 객관 지표 통합)
+- V3.3 EQ 범위 ±6dB 확대 + Compressor 후처리 결정 기여
 
-## 🗂 Dataset Processing
-연구실 환경이 아닌 실제 상용 홈 시네마 환경에 맞추기 위해, 글로벌 논문의 데이터셋을 도메인에 맞게 전면 재가공했습니다.
+기여 흔적: [commits by jinwon25](https://github.com/jinwon25/home-cinema-mood-eq/commits?author=jinwon25)
 
-### 1. 공간 음향 데이터셋 (AcousticRooms Refinement)
-* 원본 논문(*Hearing Anywhere in Any Environment, CVPR 2025*)의 260개 공간, 30만 개 RIR 데이터를 필터링.
-* **타겟 도메인 최적화:** 화장실, 대강당 등을 제외하고 **아파트, 거실, 침실, 청음실, 회의실 등 5개 카테고리의 174개 공간, 19만+ 고음질 RIR** 데이터로 압축.
-* 실제 주거 공간의 가구 재질과 저음역대 부밍(Booming) 현상을 반영한 High-Fidelity 시뮬레이션 적용.
+## 데이터
+| 데이터셋 | 규모 | 용도 |
+|---|---|---|
+| AcousticRooms (CVPR 2025) | 174 공간 / 19만+ RIR | 공간 음향 학습 (xRIR) |
+| LIRIS-ACCEDE | 160 영화 / 9,800 클립 | Valence-Arousal 회귀 학습 |
+| COGNIMUSE | 200 클립 | OOD 일반화 검증 |
 
-### 2. 감정 분석 데이터셋 (LIRIS-ACCEDE)
-* 총 160편의 영화, 9,800개 클립을 기반으로 한 V/A(Valence-Arousal) 모델 학습.
-* 4초 길이의 윈도우 슬라이딩(Stride 2초) 기법을 적용하여 입력 형식을 표준화하고 샘플 수를 확장.
-* **OOD(Out-of-Distribution) 평가:** COGNIMUSE 데이터셋(200개 클립)을 활용하여, 학습에 쓰이지 않은 새로운 영화에 대한 일반화 성능 검증 완료.
+## 시스템 흐름
 
-## 📐 Evaluation Metrics
-CineSpace 시스템의 신뢰성을 증명하기 위해 다음과 같은 평가 지표를 활용합니다.
+### 1. 공간 인식 음향 최적화 (xRIR)
+스마트폰 LiDAR/RoomPlan과 1회 sweep 녹음만으로 방의 음향 지문을 만들고 최적 스피커 좌표를 추천.
+- ViT(공간) × ResNet-18(잔향) → Cross-Attention 융합 → 1024차원 공간 음향 지문
+- 최적 스피커 좌표 5곳 추천 + 배치 후 Inverse EQ 자동 보정
 
-| 분류 | 적용 기술 | 평가지표 (Metrics) | 검증 목적 |
-| :--- | :--- | :--- | :--- |
-| **UX 지표** | 기술 1 | **Distance Error (m)** | 시뮬레이션상 최적 명당 좌표(GT)와 AI 추천 위치 간의 물리적 거리 오차 검증 |
-| **AI 코어** | 기술 1 | **RT60, C80, DRR MAE** | 공간의 잔향 시간, 명료도 등 물리적 음향 법칙에 대한 모델의 예측 오차율 측정 (Pyroomacoustics 시뮬레이션 GT 대비) |
-| **상용화** | 기술 1 | **Inference Speed (ms)** | 모바일 환경 적용을 위한 Backbone 모델 경량화 및 추론 속도 측정 |
-| **음향 표준**| 기술 2 | **STOI, SI-SDR, LSD** | 대사 명료도, 음원 왜곡률, 음색 변화 등 오디오 믹싱 후의 객관적 음질 향상 검증 |
-| **자체 검증**| 기술 2 | **MRI, DPR** | Ducking 속도 및 부드러움, 배경음 대비 대사 볼륨 유지력 등 맞춤형 기술 검증 |
-| **주관 평가**| 기술 2 | **MUSHRA Test** | 국제 표준 블라인드 테스트를 통한 실제 사람 귀(14명 대상)의 청취 선호도 및 통계적 유의성 입증 |
+### 2. 콘텐츠 인식 동적 EQ (Mood-EQ) — 담당 트랙
+영상 장면의 감정과 음원 구조를 분석해 실시간으로 사운드를 믹싱.
+- X-CLIP + PANNs → Valence-Arousal 회귀로 씬 감정 분석
+- 객체 분리 기반 10-band 동적 EQ
+- 대사 보호 Ducking — 폭발음·격투 씬에서도 대사 명료도 유지
 
+자세한 시스템 설명: [docs/system-overview.md](./docs/system-overview.md)
 
----
-*Developed by POSCO AIㆍBigData Academy 32nd C4 @ 2026*
+## 기술 스택
+| 영역 | 도구 |
+|---|---|
+| Backend | FastAPI, PyTorch, pyroomacoustics |
+| Mobile | React Native 0.74, TypeScript |
+| ML 학습 | PyTorch, timm, einops, auraloss |
+| 오디오 처리 | Pedalboard, librosa, Silero VAD, PANNs |
+| 씬 분석 | PySceneDetect, OpenCV, X-CLIP |
+| 평가 | webMUSHRA, STOI · SI-SDR · LSD · MRI · DPR |
+
+## 평가 지표 (담당 트랙)
+| 분류 | 지표 | 검증 목적 |
+|---|---|---|
+| 음향 표준 | STOI, SI-SDR, LSD | 대사 명료도, 음원 왜곡, 음색 변화 |
+| 자체 검증 | MRI, DPR | Ducking 속도·부드러움, 배경음 대비 대사 볼륨 유지력 |
+| 주관 평가 | MUSHRA | 블라인드 청취 테스트 (14명) — 통계적 유의성 검증 |
+
+## 디렉토리 구조
+```
+home-cinema-mood-eq/
+├── backend/                  # FastAPI 서버 (job orchestration, xRIR 추론)
+├── mobile/                   # React Native 앱 (3D 스캔, sweep 녹음, UI)
+├── model/                    # 학습 파이프라인 (3D 공간 음향, autoEQ)
+├── evaluation/               # webMUSHRA 청취 평가 + 객관 지표
+├── scripts/                  # 데이터 전처리·feature 추출·평가 스크립트
+├── run_pipeline.py           # 메인 추론 파이프라인 진입점
+├── compare_spectra.py        # 스펙트럼 A/B 비교
+├── live_compare(_fx).py      # 실시간 청취 비교
+├── generate_fx_demo.py       # 데모 셋 생성
+└── docs/
+    ├── system-overview.md           # POFLIX 전체 시스템 명세
+    ├── specification.md             # V3.3 시스템 스펙
+    ├── liris-migration-plan.md      # LIRIS-ACCEDE 전환 최종 plan
+    ├── worker-guide.md              # Mood-EQ 워커 운영 가이드
+    ├── audio-features.md            # 음향 기능 상세
+    ├── decisions/                   # V3.5.x → V3.5.7 의사결정 기록
+    └── migration_history/           # LIRIS 마이그레이션 plan V1~V5 archive
+```
