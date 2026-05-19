@@ -81,6 +81,7 @@ home-cinema-mood-eq/
 │
 ├── evaluation/                 # 청취 평가 (담당 트랙)
 │   ├── webmushra/              #   MUSHRA 블라인드 테스트 UI
+│   ├── baseline/scene_labels/  #   씬 라벨 baseline (lalaland · topgun)
 │   ├── results/                #   청취 결과 (gitignored)
 │   └── rehearsal_checklist.md
 │
