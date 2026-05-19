@@ -11,9 +11,9 @@
 기본값으로 실행하면 runs/demo_iron_sky 의 Iron Sky teaser 결과를 비교합니다.
 
 Usage:
-    venv/bin/python compare_spectra.py                          # 기본 demo 비교
-    venv/bin/python compare_spectra.py --original X.mp4 --processed Y.mp4
-    venv/bin/python compare_spectra.py --no-show                # PNG 만 저장
+    venv/bin/python scripts/demos/compare_spectra.py                          # 기본 demo 비교
+    venv/bin/python scripts/demos/compare_spectra.py --original X.mp4 --processed Y.mp4
+    venv/bin/python scripts/demos/compare_spectra.py --no-show                # PNG 만 저장
 """
 
 from __future__ import annotations

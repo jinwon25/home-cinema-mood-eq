@@ -17,10 +17,10 @@ FX 근거: Juslin & Västfjäll 2008 (BRECVEM), Rumsey 2002 (spatial),
     종료: Q 키 또는 창 닫기
 
 Usage:
-    venv/bin/python live_compare_fx.py                    # 기본 Kakao demo
-    venv/bin/python live_compare_fx.py --audio demo       # EQ+FX 오디오로 시작
-    venv/bin/python live_compare_fx.py --speed 0.5        # 0.5× 재생
-    venv/bin/python live_compare_fx.py \\
+    venv/bin/python scripts/demos/live_compare_fx.py                    # 기본 Kakao demo
+    venv/bin/python scripts/demos/live_compare_fx.py --audio demo       # EQ+FX 오디오로 시작
+    venv/bin/python scripts/demos/live_compare_fx.py --speed 0.5        # 0.5× 재생
+    venv/bin/python scripts/demos/live_compare_fx.py \\
         --processed my_eq.mp4 --demo my_eq_fx.mp4 \\
         --original my_orig.mp4 --timeline my_timeline.json
 

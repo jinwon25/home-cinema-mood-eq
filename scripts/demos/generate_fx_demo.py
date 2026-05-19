@@ -18,8 +18,8 @@ Reverb 는 pedalboard 기본 preset 3택 (room_size + wet_level 짝) 사용 —
    구체적 decay 수치를 직접 정하지 않음.
 
 Usage:
-    venv/bin/python generate_fx_demo.py                # 기본: kakao 데모
-    venv/bin/python generate_fx_demo.py --force        # 이미 있어도 재생성
+    venv/bin/python scripts/demos/generate_fx_demo.py                # 기본: kakao 데모
+    venv/bin/python scripts/demos/generate_fx_demo.py --force        # 이미 있어도 재생성
 """
 
 from __future__ import annotations

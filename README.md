@@ -60,21 +60,46 @@ Scene-Aware Smart Audio Optimization.
 ## 디렉토리 구조
 ```
 home-cinema-mood-eq/
-├── backend/                  # FastAPI 서버 (job orchestration, xRIR 추론)
-├── mobile/                   # React Native 앱 (3D 스캔, sweep 녹음, UI)
-├── model/                    # 학습 파이프라인 (3D 공간 음향, autoEQ)
-├── evaluation/               # webMUSHRA 청취 평가 + 객관 지표
-├── scripts/                  # 데이터 전처리·feature 추출·평가 스크립트
-├── run_pipeline.py           # 메인 추론 파이프라인 진입점
-├── compare_spectra.py        # 스펙트럼 A/B 비교
-├── live_compare(_fx).py      # 실시간 청취 비교
-├── generate_fx_demo.py       # 데모 셋 생성
+├── README.md
+├── LICENSE
+├── requirements.txt
+├── run_pipeline.py             # 메인 추론 파이프라인 진입점
+│
+├── backend/                    # FastAPI 서버 (job orchestration, xRIR 추론)
+├── mobile/                     # React Native 앱 (3D 스캔, sweep 녹음, UI)
+├── model/                      # 학습 파이프라인 (3D 공간 음향, autoEQ)
+│
+├── scripts/                    # 데이터 전처리·feature 추출
+│   ├── precompute_*.py         #   AST · CLIP-frame mean features
+│   ├── evaluate_lomo_testsets.py
+│   ├── compare_ablation.py
+│   └── demos/                  #   A/B 비교·청취 데모 스크립트
+│       ├── compare_spectra.py
+│       ├── live_compare.py
+│       ├── live_compare_fx.py
+│       └── generate_fx_demo.py
+│
+├── evaluation/                 # 청취 평가 (담당 트랙)
+│   ├── webmushra/              #   MUSHRA 블라인드 테스트 UI
+│   ├── results/                #   청취 결과 (gitignored)
+│   └── rehearsal_checklist.md
+│
+├── tools/                      # MUSHRA·V3.5.x 평가 보조 도구
+│   ├── run_v3_5_{5,6,7}_pipeline.py
+│   ├── analyze_mushra_results.py
+│   ├── objective_metrics{,_compare}.py
+│   ├── auto_select_segments.py
+│   ├── generate_{anchor,mid_anchor,calibration_tones}.py
+│   └── loudness_match.py
+│
+├── data/   dataset/   outputs/  # 외부 데이터·산출물 마운트 (gitignored)
+│
 └── docs/
-    ├── system-overview.md           # POFLIX 전체 시스템 명세
-    ├── specification.md             # V3.3 시스템 스펙
-    ├── liris-migration-plan.md      # LIRIS-ACCEDE 전환 최종 plan
-    ├── worker-guide.md              # Mood-EQ 워커 운영 가이드
-    ├── audio-features.md            # 음향 기능 상세
-    ├── decisions/                   # V3.5.x → V3.5.7 의사결정 기록
-    └── migration_history/           # LIRIS 마이그레이션 plan V1~V5 archive
+    ├── system-overview.md      # POFLIX 전체 시스템 명세
+    ├── specification.md        # V3.3 시스템 스펙
+    ├── liris-migration-plan.md # LIRIS-ACCEDE 전환 최종 plan
+    ├── worker-guide.md         # Mood-EQ 워커 운영 가이드
+    ├── audio-features.md       # 음향 기능 상세
+    ├── decisions/              # V3.5.x → V3.5.7 의사결정 기록
+    └── migration_history/      # LIRIS plan V1~V5 archive
 ```

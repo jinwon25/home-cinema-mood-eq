@@ -10,10 +10,10 @@
     종료: Q 키 또는 창 닫기
 
 Usage:
-    venv/bin/python live_compare.py                      # 기본 Iron Sky demo
-    venv/bin/python live_compare.py --audio demo         # 3× 오디오로 시작
-    venv/bin/python live_compare.py --speed 0.5          # 0.5× 재생
-    venv/bin/python live_compare.py \\
+    venv/bin/python scripts/demos/live_compare.py                      # 기본 Iron Sky demo
+    venv/bin/python scripts/demos/live_compare.py --audio demo         # 3× 오디오로 시작
+    venv/bin/python scripts/demos/live_compare.py --speed 0.5          # 0.5× 재생
+    venv/bin/python scripts/demos/live_compare.py \\
         --processed my_1x.mp4 --demo my_3x.mp4 \\
         --original my_orig.mp4 --timeline my_timeline.json
 
