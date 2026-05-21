@@ -12,15 +12,18 @@
 ### 1. 기술 1: 공간 인식 기반 음향 최적화 (Spatial Audio Optimization)
 휴대폰 센서와 1회의 스윕(Sweep) 음원 재생만으로 방의 음향 지문을 파악하고 최적의 스피커 배치를 추천합니다.
 * **공간 및 음향 데이터 수집:** 스마트폰 LiDAR/RoomPlan으로 3D 지도를 생성하고, 테스트 음원(Sweep)을 녹음.
-* **멀티모달 음향 예측 (xRIR):** * 공간을 보는 눈 (ViT): 방의 형태와 구조 파악
+* **멀티모달 음향 예측 (xRIR):** * 공간을 보는 눈 (ConvNeXT): 방의 형태와 구조 파악 — ViT를 baseline으로 비교 평가 후 C50 Error 유의 개선(p=0.0085)을 근거로 ConvNeXT 채택
   * 소리를 듣는 귀 (ResNet-18): 울림의 패턴과 잔향 분석
   * Cross-Attention 융합을 통해 1024차원의 공간 음향 지문(xRIR) 예측.
 * **최적 배치 가이드 & 자동 보정:** 물리적으로 음향이 가장 훌륭한 5곳의 좌표를 추천하고, 배치 후 최종 Inverse EQ를 계산하여 공간 보정을 마무리합니다.
 
 ### 2. 기술 2: 콘텐츠 인식 기반 자동 EQ (Content-Aware Dynamic EQ)
 영상 장면의 분위기와 대사를 분석하여 실시간으로 사운드를 믹싱합니다.
-* **실시간 감정(Mood) 분석:** X-CLIP과 PANNs 모델을 활용하여 영상의 시각/청각적 특징을 추출하고, Valence-Arousal(V/A) 회귀 모델을 통해 감정 상태를 분석합니다.
-* **동적 EQ 및 대사 보호 (Ducking):** 폭발음 등 배경음이 커지는 긴박한 씬에서도 대사 명료도를 잃지 않도록, 객체 분리 기반의 동적 10-band EQ 제어를 수행합니다.
+* **실시간 감정(Mood) 분석:** X-CLIP(시각, 5120d)과 PANNs(청각, 2048d)로 영상의 시각/청각적 특징을 추출하고, **Gate Network**로 두 모달리티의 중요도를 씬마다 가중 융합(Concat·GMU 대비 ablation 채택). **Valence-Arousal 회귀 + Mood Head(K=7)** 듀얼 출력으로 감정 상태를 추정합니다.
+* **Dual-Layer EQ:**
+  * **Layer 1 — 10-band Peaking EQ:** ISO R-40 octave band 기반 10개 주파수(31.5~16k Hz)에 감정→EQ 매핑 적용 (학술 contribution).
+  * **Layer 2 — Shelf · Reverb · Limiter:** 지각 한계(JND ~1 dB) 위로 증폭하는 perceptual amplifier.
+* **VAD 기반 Dialogue Protection:** Silero VAD가 측정한 씬 내 대사 비율(`density`)로 voice-critical 대역(1·2·4 kHz)의 EQ gain을 선형 감쇠(`g_eff = g_orig · (1 − (1 − α_d)·density)`). Reverb tail도 대사 구간만 30 ms raised-cosine crossfade로 bypass.
 
 ## 🗂 Dataset Processing
 연구실 환경이 아닌 실제 상용 홈 시네마 환경에 맞추기 위해, 글로벌 논문의 데이터셋을 도메인에 맞게 전면 재가공했습니다.
@@ -36,16 +39,16 @@
 * **OOD(Out-of-Distribution) 평가:** COGNIMUSE 데이터셋(200개 클립)을 활용하여, 학습에 쓰이지 않은 새로운 영화에 대한 일반화 성능 검증 완료.
 
 ## 📐 Evaluation Metrics
-CineSpace 시스템의 신뢰성을 증명하기 위해 다음과 같은 평가 지표를 활용합니다.
+POFLIX 시스템의 신뢰성을 증명하기 위해 다음과 같은 평가 지표를 활용합니다.
 
 | 분류 | 적용 기술 | 평가지표 (Metrics) | 검증 목적 |
 | :--- | :--- | :--- | :--- |
-| **UX 지표** | 기술 1 | **Distance Error (m)** | 시뮬레이션상 최적 명당 좌표(GT)와 AI 추천 위치 간의 물리적 거리 오차 검증 |
-| **AI 코어** | 기술 1 | **RT60, C80, DRR MAE** | 공간의 잔향 시간, 명료도 등 물리적 음향 법칙에 대한 모델의 예측 오차율 측정 (Pyroomacoustics 시뮬레이션 GT 대비) |
-| **상용화** | 기술 1 | **Inference Speed (ms)** | 모바일 환경 적용을 위한 Backbone 모델 경량화 및 추론 속도 측정 |
-| **음향 표준**| 기술 2 | **STOI, SI-SDR, LSD** | 대사 명료도, 음원 왜곡률, 음색 변화 등 오디오 믹싱 후의 객관적 음질 향상 검증 |
-| **자체 검증**| 기술 2 | **MRI, DPR** | Ducking 속도 및 부드러움, 배경음 대비 대사 볼륨 유지력 등 맞춤형 기술 검증 |
-| **주관 평가**| 기술 2 | **MUSHRA Test** | 국제 표준 블라인드 테스트를 통한 실제 사람 귀(14명 대상)의 청취 선호도 및 통계적 유의성 입증 |
+| **UX 지표** | 기술 1 | **공간 일치도 (정규화 거리)** | 시뮬레이션상 최적 좌표(GT)와 AI 추천 위치 간의 부합도 — grid_best 거리를 방 부피의 세제곱근으로 정규화 (낮을수록 우수). 실측 3개 룸 결과: 0.11 / 0.32 / 0.37 |
+| **AI 코어** | 기술 1 | **EDT, C50, RT60 (= T60)** | ISO 3382 기반 잔향 음향 지표 — 초기 반사음 감쇠 시간, 명료도, 60 dB 감쇠 시간을 PyRoomAcoustics 기준값 대비 비교 |
+| **상용화** | 기술 1 | **추론 시간 (초)** | PyRoomAcoustics 시뮬레이터 대비 약 12~32배 단축 (실측 룸 3종: 4.0/5.8/3.3 s vs PRA 48.0/184.8/59.5 s) |
+| **헤드라인**| 기술 2 | **CCC** (Concordance Correlation Coefficient, Lin 1989) | 예측 V/A 와 실제 V/A 의 일치도 — LIRIS-ACCEDE에서 mean 0.3603, COGNIMUSE(OOD) 0.3781 |
+| **음향 보조**| 기술 2 | **STOI, SI-SDR, LSD, DPR, MRI** | EQ 처리 전후 오디오의 객관적 음향 변화 — 대사 명료도·왜곡·음색·대사 보호·음악 복원 |
+| **주관 평가**| 기술 2 | **블라인드 A/B 청취 평가** | 원본 vs 시스템 적용본 블라인드 비교 청취 — 3개 반 총 40명에서 32명(80%) 시스템 선호 (A반 71% · B반 93% · C반 73%) |
 
 
 ---
