@@ -1,6 +1,6 @@
-# 공간 인식과 콘텐츠 감정 분석 기반 홈 시네마 음향 자동 최적화 시스템 (POFLIX)
+# AI 기반 홈 시네마 음향 자동 최적화 시스템
 
-> 스마트폰 한 대만으로 방의 음향 지문(xRIR)을 측정하고, 영상 장면의 감정(Mood)을 실시간으로 분석하여 홈 시네마 음향을 자동으로 세팅·보정하는 시스템입니다. 공간을 보는 ViT와 소리를 듣는 ResNet-18을 Cross-Attention으로 융합하여 **1024차원 공간 음향 지문**을 예측하고, X-CLIP·PANNs 기반 **Valence-Arousal 감정 회귀**로 씬 단위 사운드 믹싱을 구동합니다. 본인은 4인 팀에서 **콘텐츠 인식 동적 EQ(Mood-EQ) 워커와 평가 인프라**를 담당했습니다.
+> 🏆 **포스코 청년 AI·Big Data 아카데미 32기 최우수상 (AI 부문)** — 스마트폰 한 대만으로 방의 음향 지문(xRIR)을 측정하고, 영상 장면의 감정(Mood)을 실시간으로 분석하여 홈 시네마 음향을 자동으로 세팅·보정하는 시스템입니다. 공간을 보는 ViT와 소리를 듣는 ResNet-18을 Cross-Attention으로 융합하여 **1024차원 공간 음향 지문**을 예측하고, X-CLIP·PANNs 기반 **Valence-Arousal 감정 회귀**로 씬 단위 사운드 믹싱을 구동합니다. 사용자 블라인드 평가에서 **40명 중 32명(80%)이 시스템 적용본을 선호**.
 
 <br>
 
@@ -9,11 +9,13 @@
 | 항목 | 내용 |
 |---|---|
 | 시스템 명 | **POFLIX** (Scene-Aware Smart Audio Optimization) |
-| 진행 기간 | 2026.02 ~ 2026.04 (POSCO AI·BigData Academy 32기 C4 팀 프로젝트) |
-| 팀 구성 | 4인 팀 |
-| 본인 역할 | 콘텐츠 인식 동적 EQ(Mood-EQ) 워커 1차 구현 · 평가 인프라(MUSHRA·A/B·JND) 설계 · V3.5.7 최종 파이프라인 채택 결정 기여 |
+| 진행 기간 | 2026.03 ~ 2026.04 (2026.03.30 ~ 2026.04.29) |
+| 소속 | 포스코 청년 AI·Big Data 아카데미 32기 — C4 팀 |
+| 팀 구성 | 5인 팀 (데이터셋 정제 · 모델링 · 성능 평가 · 서비스 프로토타입 설계 · 발표 자료 구성 역할 분담) |
+| 본인 역할 | 모델링 · 성능 평가 · 발표 자료 구성 (**기여도 25%**) |
 | 핵심 도구 | PyTorch · FastAPI · React Native · Pedalboard · librosa · Silero VAD · PANNs · PySceneDetect · webMUSHRA |
-| 주요 산출물 | xRIR 추론 백엔드 · Mood-EQ 워커 · MUSHRA 블라인드 청취 평가 인프라 · 객관 지표 평가 도구 |
+| 주요 산출물 | xRIR 추론 백엔드 · Mood-EQ 워커 · 블라인드 청취 평가 인프라 · 객관 지표 평가 도구 |
+| 수상 | 🏆 **포스코 청년 AI·Big Data 아카데미 32기 최우수상 (AI 부문)** |
 | 기여 흔적 | [commits by jinwon25](https://github.com/jinwon25/home-cinema-mood-eq/commits?author=jinwon25) |
 
 <br>
@@ -206,4 +208,5 @@ python tools/analyze_mushra_results.py
 ---
 
 **작성자** · 최진원 (munjwc25@gmail.com) · 2026  
-**팀** · POSCO AI·BigData Academy 32기 C4 — 4인 팀, 본인은 콘텐츠 인식 동적 EQ(Mood-EQ) 워커와 평가 인프라 담당
+**팀** · 포스코 청년 AI·Big Data 아카데미 32기 — C4 (5인 팀), 본인은 모델링 · 성능 평가 · 발표 자료 구성 담당 (기여도 25%)  
+**수상** · 🏆 포스코 청년 AI·Big Data 아카데미 32기 최우수상 (AI 부문)
