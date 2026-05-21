@@ -1,15 +1,8 @@
 # POFLIX — AI 기반 홈 시네마 음향 자동 최적화 시스템
 
-> **포스코 청년 AI·Big Data 아카데미 32기 최우수상 (AI 부문)** — 스마트폰 한 대로 방의 음향 지문(xRIR)을 측정하고, 영상 장면의 감정을 분석해 사운드를 자동 보정하는 시스템.
->
-> **TL;DR (헤드라인 수치)**
-> - **블라인드 A/B 청취 평가에서 40명 중 32명(80%)이 시스템 적용본 선호** — 3개 반(14·15·11명) 합산, 시스템이 원본을 일관되게 능가.
-> - **공간 백본 ViT → ConvNeXT 교체로 C50 Error 유의 개선** (1.0827, p=0.0085) — 초기 반사음 추정 정확도가 통계적으로 의미 있게 향상.
-> - **감정 회귀 모델 CCC 0.3603 (V 0.3895 · A 0.3312)** — 머신러닝 SOTA(Baruah 2017 CCC 0.200)를 큰 폭으로 상회, 딥러닝 SOTA(Gan 2017 CCC 0.414)에 근접.
+> 🏆 **포스코 청년 AI·Big Data 아카데미 32기 최우수상 (AI 부문) 수상작** — 스마트폰 한 대로 방의 음향 지문(xRIR)을 측정하고, 영상 장면의 감정을 실시간 분석해 홈 시네마 사운드를 자동 보정하는 시스템입니다. **ConvNeXT**(공간 시각) · **ResNet-18**(음향)을 **Cross-Attention**으로 융합한 **1024차원 공간 음향 지문**, X-CLIP + PANNs를 **Gate Network**로 결합한 **Valence-Arousal + Mood Head(K=7)** 감정 회귀, **Dual-Layer EQ + Silero VAD 기반 Dialogue Protection**까지 투 트랙(공간·콘텐츠)으로 작동합니다. 블라인드 A/B 청취 평가에서 **40명 중 32명(80%)이 시스템 적용본을 선호**했고, 공간 백본은 ViT → ConvNeXT 교체로 **C50 Error 유의 개선(p=0.0085)** 을 확인했으며, 감정 회귀 모델은 **CCC 0.3603** 으로 머신러닝 SOTA(Baruah 2017 CCC 0.200)를 큰 폭으로 상회하고 딥러닝 SOTA(Gan 2017 CCC 0.414)에 근접합니다.
 
 <br>
-
----
 
 ## 1. 프로젝트 개요
 
@@ -21,12 +14,10 @@
 | 본인 역할 | 모델링 · 성능 평가 · 발표 자료 구성 (**기여도 25%**) |
 | 핵심 도구 | PyTorch · FastAPI · React Native · Pedalboard · librosa · Silero VAD · X-CLIP · PANNs · ConvNeXT · ResNet-18 · PySceneDetect |
 | 주요 산출물 | xRIR 추론 백엔드 · Mood-EQ 워커 · 블라인드 A/B 청취 평가 인프라 · 객관 지표 평가 도구 |
-| 수상 | **포스코 청년 AI·Big Data 아카데미 32기 최우수상 (AI 부문)** |
+| 수상 | 🏆 **포스코 청년 AI·Big Data 아카데미 32기 최우수상 (AI 부문)** |
 | 기여 흔적 | [commits by jinwon25](https://github.com/jinwon25/home-cinema-mood-eq/commits?author=jinwon25) |
 
 <br>
-
----
 
 ## 2. 분석 요약 (Key Findings)
 
@@ -36,8 +27,6 @@
 - **블라인드 A/B 청취 평가** — 3개 반 **총 40명** 대상으로 원본 vs 시스템 적용본 청취 후 선호 응답: A반 14명 중 10명(71%) · B반 15명 중 14명(93%) · C반 11명 중 8명(73%) → **합계 32/40 = 80% 선호**.
 
 <br>
-
----
 
 ## 3. 배경 및 목적
 
@@ -51,8 +40,6 @@
 
 <br>
 
----
-
 ## 4. 데이터
 
 | 데이터셋 | 원본 → 정제 | 용도 |
@@ -63,9 +50,9 @@
 
 → 실제 주거 공간의 가구 재질과 저음역대 부밍을 반영한 High-Fidelity 시뮬레이션 적용.
 
-<br>
+> ⚠️ AcousticRooms · LIRIS-ACCEDE · COGNIMUSE는 모두 외부 라이선스 데이터셋이므로 본 저장소에는 포함하지 않습니다. 각각 원본 논문 저자 배포처 / 공식 배포처에서 라이선스 동의 후 다운로드해야 합니다.
 
----
+<br>
 
 ## 5. 시스템 흐름
 
@@ -101,8 +88,6 @@
 - **V3.3 EQ 범위 ±6 dB 확대 + Limiter 후처리 결정** 기여.
 
 <br>
-
----
 
 ## 6. 평가 지표 및 결과
 
@@ -216,8 +201,6 @@ V/A·CCC는 모델 회귀 정확도 지표이고, EQ 처리 결과의 음향적 
 
 <br>
 
----
-
 ## 7. 기술 스택
 
 | 분류 | 사용 도구 |
@@ -231,8 +214,6 @@ V/A·CCC는 모델 회귀 정확도 지표이고, EQ 처리 결과의 음향적 
 | 평가 | webMUSHRA (도구) · 블라인드 A/B 청취 평가 · STOI · SI-SDR · LSD · DPR · MRI |
 
 <br>
-
----
 
 ## 8. 디렉토리 구조
 
@@ -269,7 +250,7 @@ home-cinema-mood-eq/
 │   ├── generate_{anchor,mid_anchor,calibration_tones}.py
 │   └── loudness_match.py
 │
-├── data/   dataset/   outputs/  # 외부 데이터·산출물 마운트 (gitignored)
+├── data/   dataset/   outputs/  # ⚠️ gitignored (외부 데이터·산출물 마운트)
 │
 └── docs/
     ├── POFLIX_발표자료.pdf       # 최종 발표자료 (Source of Truth)
@@ -283,8 +264,6 @@ home-cinema-mood-eq/
 ```
 
 <br>
-
----
 
 ## 9. 실행 방법
 
@@ -305,8 +284,6 @@ python tools/objective_metrics.py
 
 <br>
 
----
-
 ## 10. 한계 및 향후 과제
 
 - **데이터셋 도메인 차이** — AcousticRooms 시뮬레이션 RIR과 실제 한국형 LDK 거주 공간 사이에는 가구 재질·벽재 차이가 남아 있어, 실측 RIR 수집을 통한 도메인 적응이 필요.
@@ -316,8 +293,6 @@ python tools/objective_metrics.py
 - **온디바이스 통합** — 현재 Mobile은 스캔·녹음·UI 담당, 추론은 백엔드. 추후 핵심 모델의 온디바이스 추론 이식이 필요.
 
 <br>
-
----
 
 ## 11. 참고 자료
 
@@ -335,4 +310,4 @@ python tools/objective_metrics.py
 
 **작성자** · 최진원 (munjwc25@gmail.com) · 2026  
 **팀** · 포스코 청년 AI·Big Data 아카데미 32기 — C4 (5인 팀), 본인은 모델링 · 성능 평가 · 발표 자료 구성 담당 (기여도 25%)  
-**수상** · 포스코 청년 AI·Big Data 아카데미 32기 최우수상 (AI 부문)
+**수상** · 🏆 포스코 청년 AI·Big Data 아카데미 32기 최우수상 (AI 부문)
