@@ -448,7 +448,7 @@ Frozen encoder 출력을 그대로 캐시하되, **post-encoder feature space**�
 | Batch size | 32 | 32 | steps/epoch ≈ 32 (1032 train / 32 batch) |
 | Epochs | 30-50 | **40** (+ early stop) | 실측 peak val CCC @ avg epoch 17–21, early stop patience 10으로 자동 종료 |
 | LR scheduler | Cosine | warmup + Cosine | V3.2 §4-5 유지 |
-| Warmup steps | 500 | **500** (config 기본값 유지) | 실측상 전체–1280 step 중 500 warmup 정상 작동 |
+| Warmup steps | 500 | **500** (config 기본값 유지) | 실측상 전체 약 1280 step 중 500 warmup 정상 작동 |
 | Grad clip | max_norm=1.0 | max_norm=1.0 | |
 | Early stopping | val mean_CCC, patience=10 | 동일 **+ (ccc, −mae) tuple** | Pareto-guard |
 | **sigma_filter_threshold** | — | **−1.0 (OFF)** | §4-3 ablation: Δ_CCC = +0.067 (p<0.0001) |
@@ -495,7 +495,7 @@ else:
 
 ### 5-0. 분석-재생 분리 아키텍처 (V3.2 §5-0 유지 + VAD 병렬 보정)
 
-**명세서 V3.2 §5-8-5 원 설계를 정확히 반영**: Silero VAD는 오디오 트랙만 필요하므로 씬 분할/모델 추론과 **독립 병렬 실행**. Python `concurrent.futures.ThreadPoolExecutor`로 2개 thread orchestrate. VAD 처리 시간(10분 영화에–10초)이 모델 추론 병목(약 2-3분)에 완전히 가려져 **추가 소요 0**.
+**명세서 V3.2 §5-8-5 원 설계를 정확히 반영**: Silero VAD는 오디오 트랙만 필요하므로 씬 분할/모델 추론과 **독립 병렬 실행**. Python `concurrent.futures.ThreadPoolExecutor`로 2개 thread orchestrate. VAD 처리 시간(10분 영화에 약 10초)이 모델 추론 병목(약 2-3분)에 완전히 가려져 **추가 소요 0**.
 
 ```
                           영상 입력 (movie.mp4)

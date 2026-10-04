@@ -13,7 +13,7 @@ fusion, VA / Mood (K=4) / Gate entropy heads, loss, dataset, trainer, LOMO
 
 - 공정 비교 조건: 동일 pretrain 데이터셋(**AudioSet**), 동일 film split,
   동일 seed, 동일 optimizer/lr/epoch.
-- 모델 규모 차이: PANNs CNN14 ~80M vs AST ~86M (거의 동일).
+- 모델 규모 차이: PANNs CNN14–80M vs AST 약 86M (거의 동일).
 
 ## 기대 효과
 - 베이스라인 약점 = arousal CCC **0.403**. AST는 self-attention으로

@@ -150,7 +150,7 @@ Amplitude
 ### 3.1 왜 10 band 인가?
 - **ISO R-40 / IEC 61260** 의 1-octave band series 준용:
   31.5, 63, 125, 250, 500, 1k, 2k, 4k, 8k, 16k Hz
-- 인간 가청 대역 (20 Hz약 20 kHz) 을 log 스케일로 10 개 등분
+- 인간 가청 대역 (20 Hz–20 kHz) 을 log 스케일로 10 개 등분
 - 업계 graphic EQ (DJ 믹서, 하이파이 앰프) 의 표준 band 수
 - 10 개는 "너무 조악 (5-band) 과 너무 복잡 (31-band) 의 중간" — **해석 가능한 최소 해상도**
 
@@ -179,7 +179,7 @@ Amplitude
 - 근거:
   - **Fletcher & Galt 1950** (*The perception of speech and its relation to telephony*): 음성 명료도
     지수(Articulation Index)의 85 % 가 1–4 kHz 대역에서 결정
-  - **ITU-R BS.1534-3** (MUSHRA): 음성 평가 시 500 Hz약 5 kHz 가 결정적
+  - **ITU-R BS.1534-3** (MUSHRA): 음성 평가 시 500 Hz–5 kHz 가 결정적
   - **male vocal F1≈500, F2≈1500, F3≈2500 Hz; female F1≈700, F2≈2200 Hz** — 포먼트 분포
   - **자음** (voiceless fricative /s/, /f/) 의 주 에너지는 3–6 kHz
 
@@ -215,7 +215,7 @@ V5-FINAL §6-4 에 고정된 표. 각 mood 당 10 개 dB 값:
   - **Eerola & Vuoskoski 2011** *A comparison of the discrete and dimensional models of emotion in music* (Psychology of Music 39:18-49):
     sad-rated musical excerpts 가 평균적으로 **spectral centroid 낮음** (dull)
   - **Juslin & Laukka 2003** *Communication of emotions in vocal expression and music*
-    (Psychological Bulletin 129:770): 슬픈 발화의 고주파 감소–5 dB 관찰
+    (Psychological Bulletin 129:770): 슬픈 발화의 고주파 감소 약 5 dB 관찰
 
 #### Peacefulness — 평온
 - 패턴: 저역 slight lift + 고역 mild cut
@@ -486,8 +486,8 @@ HighShelfFilter(cutoff_frequency_hz=8000.0, gain_db=...)  # high
 
 | Shelf | 영향 대역 | 체감 | 대사 명료도 영향 |
 |---|---|---|---|
-| sub-bass (<60 Hz) | 20–60 Hz | visceral impact, 폭발, 심장 진동 | **거의 없음** (대사 대역 200 Hz약 4 kHz 밖) |
-| low (<200 Hz) | 약 200 Hz 이하 | warmth, fullness, body | 약함 (male F0–120 Hz 에 약간 영향) |
+| sub-bass (<60 Hz) | 20–60 Hz | visceral impact, 폭발, 심장 진동 | **거의 없음** (대사 대역 200 Hz–4 kHz 밖) |
+| low (<200 Hz) | 약 200 Hz 이하 | warmth, fullness, body | 약함 (male F0 약 120 Hz 에 약간 영향) |
 | high (>8 kHz) | 8 kHz\~ | air, brilliance, shimmer | **거의 없음** (sibilance 끝난 대역) |
 
 → **대사 보호 관점에서 shelf 는 모두 "대체로 안전"** — 대사 구간 bypass 에서
@@ -622,7 +622,7 @@ for scene in timeline:
 
 #### 설계 결정 3 가지
 1. **bypass 대상 = reverb stage 만** (`_strip_reverb`) — shelf 는 유지
-   - 근거: shelf 대역 (60 / 200 / 8 kHz) 은 대사 주 대역 (200 Hz약 4 kHz) 과
+   - 근거: shelf 대역 (60 / 200 / 8 kHz) 은 대사 주 대역 (200 Hz–4 kHz) 과
      거의 겹치지 않음 (§4.1 표 참조). shelf 까지 끄면 배경 mood 가 사라짐
 2. **bypass 단위 = scene 내 정확한 segment** (frame-accurate, 상대시간 기준)
    - 근거: Silero VAD 가 이미 scene 내 상대시간으로 (start, end) pair 저장
@@ -711,7 +711,7 @@ Layer 2 FX 의 모든 mood 매핑이 의지하는 peer-reviewed 문헌 6 편 + �
 |---|---|---|
 | ISO R-40 / IEC 61260 | 1-octave band center frequencies | 10-band peaking (31.5–16k Hz) |
 | ITU-R BS.1770-4 | Loudness measurement | Limiter release=100 ms 근거 |
-| ITU-R BS.1534-3 MUSHRA | 음성 평가 대역 500 Hz약 5 kHz | voice-critical 판정 |
+| ITU-R BS.1534-3 MUSHRA | 음성 평가 대역 500 Hz–5 kHz | voice-critical 판정 |
 | ANSI S1.11 | Octave-band filter standard | band cutoff 200 Hz 근거 |
 | AES17 | Digital audio engineering | dBFS 정의 |
 | THX Certification | Subwoofer crossover | 60/80 Hz sub-bass 경계 |

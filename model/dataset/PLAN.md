@@ -49,7 +49,7 @@ After The Rain, Between Viewings, Big Buck Bunny, Chatter, First Bite, Lesson Le
 - Blender Open Movies: Elephants Dream, Cosmos Laundromat, Spring, Agent 327, Hero, Caminandes 1/2/3
 - Vimeo CC-BY 단편, Archive.org Prelinger 선별
 
-**추정 최종 코퍼스**: 17-25편, **약 3-4시간**, **~3,000 windows @4s**. 규모는 CogniMuse 7편보다 큼, LIRIS-ACCEDE Continuous(30편)보다 작음. 학술적으로 충분.
+**추정 최종 코퍼스**: 17-25편, **약 3-4시간**, **약 3,000 windows @4s**. 규모는 CogniMuse 7편보다 큼, LIRIS-ACCEDE Continuous(30편)보다 작음. 학술적으로 충분.
 
 ### D. Emo-FilM의 부가 가치와 한계
 
@@ -64,7 +64,7 @@ After The Rain, Between Viewings, Big Buck Bunny, Chatter, First Bite, Lesson Le
 ### 1. CC 영화 코퍼스
 - **Core 14편**: Emo-FilM 리스트 그대로
 - **Extension**: Blender 추가 단편 + 선별 Vimeo/Archive.org
-- **Target scale**: ~3K windows (4s stride)
+- **Target scale**: 약 3K windows (4s stride)
 
 ### 2. Layer 1 앙상블 (6 모델 유지)
 - **Audio 3**: Essentia DEAM-musicnn, emoMusic-musicnn, MuSe-musicnn (musicnn backbone 통일)
@@ -81,7 +81,7 @@ After The Rain, Between Viewings, Big Buck Bunny, Chatter, First Bite, Lesson Le
 
 ### 4. Layer 3 — Human adjudication
 - Agreement: `|ensemble_V − gemini_V| < 0.2 AND |ensemble_A − gemini_A| < 0.2` → 자동 채택 (weighted avg)
-- Disagreement: ~200 clips → human queue
+- Disagreement: 약 200 clips → human queue
 - Test set: 별도 무작위 200 clips → human gold standard
 - High uncertainty: `ensemble_std > 0.3` OR `gemini_confidence < 0.5` → 학습 제외
 - 평가 도구: 2D V/A slider 웹 UI
@@ -165,7 +165,7 @@ After The Rain, Between Viewings, Big Buck Bunny, Chatter, First Bite, Lesson Le
 3. Streamlit V/A slider UI 구축
 4. **Gold test set**: **test films 내부에서만** V/A quadrant stratified 200 clips 추출 (전체 무작위 금지)
 5. **Disagreement queue**: train+val films에서 disagreement 약 200 clips
-6. 평가자 2-3명 모집/셀프 → 총 ~400 clips 주석
+6. 평가자 2-3명 모집/셀프 → 총 약 400 clips 주석
 7. Krippendorff's α 계산, 0.7 미만 시 가이드 재정비
 8. Emo-FilM 14편 매칭 영화에 대해서는 component→V/A 파생값과 cross-check
 9. 최종 데이터셋 구조 확정:
@@ -208,7 +208,7 @@ After The Rain, Between Viewings, Big Buck Bunny, Chatter, First Bite, Lesson Le
 | **Test data leakage** (same-film frames in train+test) | Phase 4에서 **film-level split 먼저** → test films 내부에서만 gold clip 추출. Window-level random split 금지. |
 | **순환 평가** (pseudo-label로 모델 평가) | CCC_pseudo(sanity) + CCC_human(test_gold, Primary) 분리 보고. gap > 0.25면 overfit 경보. |
 | **V/A 분포 이질성** (CogniMuse 기준 임계값 미스매치) | Phase 2 `analyze_va_distance.py` 결과로 negative sampling percentile 재계산. 기존 값 강제 재사용 금지. |
-| Emo-FilM 영상 원본 못 구함 | Blender 3편(Big Buck Bunny, Sintel, Tears of Steel)만 확보해도 ~35분 = ~500 windows. 나머지 11편은 best effort |
+| Emo-FilM 영상 원본 못 구함 | Blender 3편(Big Buck Bunny, Sintel, Tears of Steel)만 확보해도 약 35분 = 약 500 windows. 나머지 11편은 best effort |
 
 ## 참고 URL
 

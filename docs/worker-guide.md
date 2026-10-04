@@ -297,7 +297,7 @@ python -m model.autoEQ.inference.vad_evaluator \
 프로젝트 루트에서 `python -m ...`으로 실행해야 합니다. `cd model/autoEQ/inference && python scene_splitter.py` 같은 방식은 상대 import 때문에 동작하지 않습니다.
 
 ### `FileNotFoundError: PANNs 가중치 없음`
-`model/autoEQ/assets/Cnn14_mAP=0.431.pth`가 있는지 확인. 파일 크기 ~340MB.
+`model/autoEQ/assets/Cnn14_mAP=0.431.pth`가 있는지 확인. 파일 크기 약 340MB.
 
 ### `FileNotFoundError: AudioSet 라벨 메타 없음`
 `model/autoEQ/assets/audioset_tagging_cnn/metadata/class_labels_indices.csv`가 있는지 확인. git clone이 정상 완료됐는지.
@@ -315,7 +315,7 @@ pip install opencv-python
 ```
 
 ### Silero VAD 다운로드 실패
-인터넷 연결 확인. 처음 실행 시 ~50MB 모델을 ~/.cache에 받습니다.
+인터넷 연결 확인. 처음 실행 시 약 50MB 모델을 \~/.cache에 받습니다.
 
 ### `librosa.load`가 느리거나 에러
 ```bash

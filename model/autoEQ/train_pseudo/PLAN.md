@@ -32,7 +32,7 @@
 | 지표 | 역할 | 계산식 |
 |---|---|---|
 | **CCC** | Primary, early stopping 주 기준 | 기존 `compute_ccc` |
-| **MAE** | 합격 게이트 + early stopping tiebreaker | `mean(|pred - target|)` |
+| **MAE** | 합격 게이트 + early stopping tiebreaker | `mean(\|pred - target\|)` |
 | **RMSE** | 학술 보고 (AVEC 컨벤션) | `sqrt(mean((pred - target)²))` |
 | `mean_mae` | tiebreaker·게이트 | `0.5 * (mae_v + mae_a)` (산술 평균) |
 | `mean_rmse` | stretch 보고 | `0.5 * (rmse_v + rmse_a)` (산술 평균, quadratic 아님) |
@@ -488,4 +488,4 @@ python -m model.autoEQ.train_pseudo.run_lomo \
 
 ## 학술 보고서 변경 요약
 
-> "원 계획은 LIRIS-ACCEDE(~160편/9,800클립)를 학습, CogniMuse(7편)를 OOD 검증에 쓰는 것이었으나 LIRIS 미확보로 CogniMuse 단일 데이터셋 전환을 불가피하게 수행했다. (1) cross-film negative sampling 기반 Congruence head를 제거하고, (2) modality dropout을 전체 샘플에 확률 p=0.05로 적용하며, (3) LOMO 7-fold 교차검증으로 평가 방식을 변경했다. V/A 회귀(주태스크), Mood 분류(보조), Adaptive Gating + gate entropy는 V3.2 명세서 대비 변경 없이 유지된다. 평가 지표는 CCC(primary) + MAE(gate) + RMSE(report) 트리오를 채용하며, 합격 판정은 V/A Primary AND Safety로 정의하고 Mood는 informative로 보고한다."
+> "원 계획은 LIRIS-ACCEDE(약 160편/9,800클립)를 학습, CogniMuse(7편)를 OOD 검증에 쓰는 것이었으나 LIRIS 미확보로 CogniMuse 단일 데이터셋 전환을 불가피하게 수행했다. (1) cross-film negative sampling 기반 Congruence head를 제거하고, (2) modality dropout을 전체 샘플에 확률 p=0.05로 적용하며, (3) LOMO 7-fold 교차검증으로 평가 방식을 변경했다. V/A 회귀(주태스크), Mood 분류(보조), Adaptive Gating + gate entropy는 V3.2 명세서 대비 변경 없이 유지된다. 평가 지표는 CCC(primary) + MAE(gate) + RMSE(report) 트리오를 채용하며, 합격 판정은 V/A Primary AND Safety로 정의하고 Mood는 informative로 보고한다."

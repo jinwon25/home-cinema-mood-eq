@@ -10,7 +10,7 @@
 | 항목 | 내용 |
 |---|---|
 | 시스템명 | **POFLIX** (Scene-Aware Smart Audio Optimization) |
-| 진행 기간 | 2026.03.30 ~ 2026.04.29 |
+| 진행 기간 | 2026.03.30–2026.04.29 |
 | 소속 | 포스코 청년 AI·Big Data 아카데미 32기 — C4 (5인 팀) |
 | 본인 역할 | 모델링 · 성능 평가 · 발표 자료 구성 (**기여도 25%**) |
 | 핵심 도구 | PyTorch · FastAPI · React Native · Pedalboard · librosa · Silero VAD · X-CLIP · PANNs · ConvNeXT · ResNet-18 · PySceneDetect |
@@ -71,7 +71,7 @@
 - **VA + Mood Head(K=7)** — 연속 Valence-Arousal 회귀와 7-클래스 mood 분류를 동시에 출력해 씬 타임라인에 집계.
 - **Dual-Layer EQ** —
   - **Layer 1: 10-band Peaking EQ** — 감정→EQ 매핑(ISO R-40 octave band 기반)으로 학술 contribution.
-  - **Layer 2: Shelf · Reverb · Limiter** — 지각 한계(JND ~1 dB) 위로 증폭하는 perceptual amplifier.
+  - **Layer 2: Shelf · Reverb · Limiter** — 지각 한계(JND 약 1 dB) 위로 증폭하는 perceptual amplifier.
 - **VAD 기반 Dialogue Protection** — Silero VAD가 측정한 씬 내 대사 비율 `density`로 voice-critical 대역(1·2·4 kHz) gain을 선형 감쇠 (`g_eff = g_orig · (1 − (1 − α_d)·density)`). Layer 2의 reverb tail도 대사 구간만 30 ms raised-cosine crossfade로 bypass.
 
 자세한 시스템 명세 — [docs/system-overview.md](../docs/system-overview.md), [docs/audio-features.md](../docs/audio-features.md)
@@ -127,7 +127,7 @@ ISO 3382 기반 잔향 음향 지표 + UX/상용화 지표를 함께 측정.
 | 4층 휴게실 | 0.32 | 5.8 s | 184.8 s | **32×** |
 | 국제관 | 0.37 | 3.3 s | 59.5 s | **18×** |
 
-→ PyRoomAcoustics 대비 약 **12~32배 단축**되어 해당 실측 환경에서 추론 시간이 단축됐습니다. 모바일 온디바이스 실시간 동작을 입증한 수치는 아닙니다. 공간 일치도는 회의실(0.11)에서 가장 우수.
+→ PyRoomAcoustics 대비 약 **12–32배 단축**되어 해당 실측 환경에서 추론 시간이 단축됐습니다. 모바일 온디바이스 실시간 동작을 입증한 수치는 아닙니다. 공간 일치도는 회의실(0.11)에서 가장 우수.
 
 **음향 근접성 검증** — 측정 RIR을 PyRoomAcoustics로 시뮬레이션한 기준값(PRA) 대비
 
