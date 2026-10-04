@@ -2,7 +2,7 @@
 
 ## Context
 
-현재 MoodEQ 학습 파이프라인은 **LIRIS-ACCEDE**(≈160편/9,800클립, 클립당 단일 V/A 라벨) 기준으로 설계되어 있음. 그러나 LIRIS-ACCEDE 다운로드가 불가해져, 원래 OOD 검증 세트로 쓰려던 **CogniMuse**(7편/~3.5시간, 40ms 해상도 연속 V/A 주석)를 학습에도 사용해야 함.
+현재 MoodEQ 학습 파이프라인은 **LIRIS-ACCEDE**(≈160편/9,800클립, 클립당 단일 V/A 라벨) 기준으로 설계되어 있음. 그러나 LIRIS-ACCEDE 다운로드가 불가해져, 원래 OOD 검증 세트로 쓰려던 **CogniMuse**(7편/약 3.5시간, 40ms 해상도 연속 V/A 주석)를 학습에도 사용해야 함.
 
 **근본 제약**:
 - `negative_sampler.py`는 "다른 영화의 오디오와 교체"하는 cross-film swap 기반(라인 15, 102-108). 7편으로는 후보 풀이 너무 작아 스타일 leakage 위험 + congruence 신호의 self-supervised 학습이 의미를 잃음.
@@ -72,7 +72,7 @@ fold별 best_mean_ccc 기록 → 7-fold 평균 리포트
 - `cognimuse_annotation: str = "experienced"` (experienced/intended/mean)
 - `cognimuse_window_sec: int = 4` (이미 `audio_sec`와 동일하지만 명시성)
 - `cognimuse_stride_sec: int = 2`
-- `lomo_fold: int = -1` (-1=전체 학습, 0~6=fold 지정)
+- `lomo_fold: int = -1` (-1=전체 학습, 0–6=fold 지정)
 - `val_tail_ratio: float = 0.15` — train 영화 시간축 마지막 15%를 val pool로
 - `val_gap_windows: int = 2` — train/val 경계의 시간축 leakage 차단용 drop 수 (window=4s, stride=2s → gap=2는 4s 완전 분리)
 - `sigma_filter_threshold: float = -1.0` — 음수면 비활성, 양수면 σ 초과 windows 제외
@@ -318,9 +318,9 @@ Modality dropout은 이제 cong_label 없이 작동하므로 gate가 단일 모�
 
 | 섹션 | V3.2 내용 | V3.3 개정 |
 |---|---|---|
-| 2-1 학습 데이터 | LIRIS-ACCEDE ~9,800 클립, ~160편 | CogniMuse 7편, 4s/2s 윈도우 약 N windows (Phase 0 확정 후 수치 기입) |
+| 2-1 학습 데이터 | LIRIS-ACCEDE 약 9,800 클립, 약 160편 | CogniMuse 7편, 4s/2s 윈도우 약 N windows (Phase 0 확정 후 수치 기입) |
 | 2-2 검증 데이터 | LIRIS hold-out + CogniMuse OOD | LOMO 7-fold (test=1편 전체), time-based val holdout (train 영화 각 15% tail) |
-| 2-3 Film-level Split | 75/12.5/12.5 영화 분할 | **LOMO 7-fold + 하드코딩 movie 매핑 표 첨부** (BMI/CHI/CRA/DEP/FNE/GLA/LOR → id 0~6) |
+| 2-3 Film-level Split | 75/12.5/12.5 영화 분할 | **LOMO 7-fold + 하드코딩 movie 매핑 표 첨부** (BMI/CHI/CRA/DEP/FNE/GLA/LOR → id 0–6) |
 | 2-4 윈도우 구성 | 8-12s 클립 → 4s/2s 윈도우 | **40ms 연속 experienced V/A → 4s/2s 윈도우 평균(+σ 메타데이터)**. σ 분포와 학습 필터 옵션 설명 |
 | 3-3 Negative Sampling | 자기지도 cross-film 오디오 교체(50/25/25) | **삭제**. 대체 문단: "CogniMuse 7편으로는 cross-film 후보 풀이 부족하여 본 연구에서는 자기지도 congruence 학습을 제외함. 대신 modality dropout의 전역 확률 적용으로 단일 모달리티 의존을 억제" |
 | 5 Multi-task | V/A + Mood + Congruence(3-task) | **V/A(주) + Mood(보조) 2-task**. Congruence head 삭제 근거 명시 |
@@ -366,7 +366,7 @@ python -m model.autoEQ.train.cognimuse_preprocess \
     --annotation experienced
 ```
 기대: `cognimuse_visual.pt`, `cognimuse_audio.pt`, `cognimuse_metadata.pt` 생성.
-metadata 샘플링 검증: 각 window의 V/A가 [-1,1] 내, movie_id가 0~6, window 수가 영화별 ~수백 개 수준.
+metadata 샘플링 검증: 각 window의 V/A가 [-1,1] 내, movie_id가 0–6, window 수가 영화별 \~수백 개 수준.
 
 ### 3. 단일 fold LOMO 학습
 ```bash
@@ -405,7 +405,7 @@ python -m model.autoEQ.train.run_lomo \
 - 튜플 비교 `(mean_ccc, -mean_mae) > (best_ccc, -best_mae)`로 구현
 
 **Gate 건전성**:
-- 각 fold 학습 로그에서 `gate_w_v`, `gate_w_a`가 0.3~0.7 범위 유지 (단일 모달리티 붕괴 없음)
+- 각 fold 학습 로그에서 `gate_w_v`, `gate_w_a`가 0.3–0.7 범위 유지 (단일 모달리티 붕괴 없음)
 
 **지표 축 위계 (합격 판정 규칙)**:
 > 합격 판정 = **V/A Primary AND V/A Safety** (V/A는 pass/fail gate). Mood 지표는 **informative metric**으로 fold별 분포·평균을 보고하되 합격 판정에 포함하지 않음. 단 Mood Safety 미달(2+ folds가 chance 수준)은 학습 불안정 신호 → 보고서에 원인 분석 필수.
@@ -431,12 +431,12 @@ python -m model.autoEQ.train.run_lomo \
 **임계값 근거** (V/A 스팬 [-1, 1], 폭 2.0):
 - MAE 0.25 = 스팬 12.5% = mood quadrant 폭 0.5의 절반 (변별력 최소선)
 - MAE 0.30 = 15% (경계, 이 이상이면 EQ 프리셋 오선택 빈발)
-- RMSE 0.28 = AVEC 2017~2019 continuous emotion baseline 수준
+- RMSE 0.28 = AVEC 2017–2019 continuous emotion baseline 수준
 - κ 0.15 = Landis & Koch "slight→fair agreement" 경계 (chance 보정 후 최소선)
 - **f1_macro chance 배수**: `1.75/K` (Primary) / `1.4/K` (Safety) / `2.45/K` (Stretch) — K 독립성 확보로 Phase 0 게이트 결과에 자동 대응. uniform predictor의 기대 f1_macro ≈ 1/K 기준.
 
 **미달 시 대응**:
-- `mean_ccc` 0.15~0.20 구간 또는 `mean_mae` 0.25~0.30: ablation 필수 — dropout p ∈ {0.05, 0.075, 0.1}, `lambda_mood` 하향, mood head를 4-quadrant로 축소 중 선택
+- `mean_ccc` 0.15–0.20 구간 또는 `mean_mae` 0.25–0.30: ablation 필수 — dropout p ∈ {0.05, 0.075, 0.1}, `lambda_mood` 하향, mood head를 4-quadrant로 축소 중 선택
 - `mean_ccc` < 0.15: 학습 설계 근본 재검토. Visual-only / Audio-only ablation으로 문제 위치 식별
 - `ccc_valence`만 낮고 `ccc_arousal`이 높은 경우: 일반적 현상. 보고서 Discussion에 Juslin & Laukka 문헌 근거로 설명
 
@@ -455,7 +455,7 @@ pytest model/autoEQ/train/tests/test_modality_dropout.py -v
 |---|---|
 | 7편 학습만으로는 과적합 | LOMO + early stop + modality dropout으로 일반화 신호 확보. 명세서 V3.3 8-1에 한계 명시 |
 | 연속 주석 → 윈도우 평균 시 감정 전이 구간 왜곡 | `valence_std`, `arousal_std` metadata 필수 저장 + Phase 0에서 σ 분포 시각화 + CLI `--sigma_filter_threshold` 옵션 제공 |
-| **Val 1편 기반 early stopping 변동성** | Time-based within-movie val holdout로 val pool 확대(수백~수천 windows). 최종 리포트는 test CCC만 사용 |
+| **Val 1편 기반 early stopping 변동성** | Time-based within-movie val holdout로 val pool 확대(수백\~수천 windows). 최종 리포트는 test CCC만 사용 |
 | **Mood class degeneration (CogniMuse 분포 편향)** | Phase 0 게이트로 사전 차단. <1% 시 `lambda_mood` 하향 또는 4-quadrant 축소 결정 |
 | Congruence head 제거로 gate 학습 신호 약화 | `lambda_gate_entropy=0.05` 유지 + modality dropout(p=0.05) 전역 적용으로 gate 균등화 |
 | **Movie ID 재현 불일치** | `COGNIMUSE_MOVIES` 하드코딩 + run별 `fold_mapping.json` + manifest SHA 기록 |
@@ -466,4 +466,4 @@ pytest model/autoEQ/train/tests/test_modality_dropout.py -v
 
 ## 학술 보고서용 변경 요약 문구
 
-> "원 계획은 LIRIS-ACCEDE(~160편/9,800클립)를 학습, CogniMuse(7편/200클립)를 OOD 검증에 사용하는 것이었으나, LIRIS-ACCEDE 확보가 불가해져 학습과 검증 모두 CogniMuse로 진행하였다. 이에 따라 (1) cross-film negative sampling에 기반한 자기지도 Congruence head를 제거하고, (2) modality dropout을 congruence 라벨 의존성 없이 전체 샘플에 확률 p로 적용하는 형태로 수정하였으며, (3) film-level Leave-One-Movie-Out (7-fold) 교차검증으로 평가 방식을 변경하였다. V/A 회귀(주태스크), Mood 분류(보조), Adaptive Gating + 엔트로피 정규화는 V3.2 명세서 대비 변경 없이 유지된다."
+> "원 계획은 LIRIS-ACCEDE(약 160편/9,800클립)를 학습, CogniMuse(7편/200클립)를 OOD 검증에 사용하는 것이었으나, LIRIS-ACCEDE 확보가 불가해져 학습과 검증 모두 CogniMuse로 진행하였다. 이에 따라 (1) cross-film negative sampling에 기반한 자기지도 Congruence head를 제거하고, (2) modality dropout을 congruence 라벨 의존성 없이 전체 샘플에 확률 p로 적용하는 형태로 수정하였으며, (3) film-level Leave-One-Movie-Out (7-fold) 교차검증으로 평가 방식을 변경하였다. V/A 회귀(주태스크), Mood 분류(보조), Adaptive Gating + 엔트로피 정규화는 V3.2 명세서 대비 변경 없이 유지된다."

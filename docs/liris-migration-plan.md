@@ -27,7 +27,7 @@
 - Bootstrap Phase 3 전용, 21 run (2b-6 중복 제거)
 - §8 순서 근거 이원화
 
-### V1~V4 (참고 유지)
+### V1–V4 (참고 유지)
 - V4: COGNIMUSE 배제, §19 EQ 커버리지 학술 프레이밍, L_va_mse/L_va_ccc 독립 로깅
 - V3: 9,800 clip 실측, K=4 default 전환, Phase 2 → 2a/2b, film-level bootstrap, overfit monitor
 - V2: Lexicographic/Target Shrinkage 용어, CCC primary, V3.2 모델 내부 복귀
@@ -52,13 +52,13 @@
 ### 2-1. V/A scalar 실측 범위
 | 축 | 이론 (README) | 실제 | (raw−3)/2 변환 후 |
 |---|---|---|---|
-| valenceValue | 1~5 | **1.33 ~ 3.59** | **[−0.84, +0.30]** |
-| arousalValue | 1~5 | 1.32 ~ 4.54 | [−0.84, +0.77] |
+| valenceValue | 1–5 | **1.33–3.59** | **[−0.84, +0.30]** |
+| arousalValue | 1–5 | 1.32–4.54 | [−0.84, +0.77] |
 
 ### 2-2. Variance 분포
 - valenceVariance: p50=0.108, p75=0.117, max=0.164
 - arousalVariance: p50=0.150, p75=0.164, max=0.218
-- 확정 threshold: `v_thr=0.117, a_thr=0.164, AND` → 약 6~10% 발동
+- 확정 threshold: `v_thr=0.117, a_thr=0.164, AND` → 약 6–10% 발동
 
 ### 2-3. 사분면 분포
 HVHA 11.0% · HVLA 40.2% · LVHA 18.6% · LVLA 30.2%
@@ -145,19 +145,19 @@ HVHA 11.0% · HVLA 40.2% · LVHA 18.6% · LVLA 30.2%
 
 | Phase | Compute | 문서/분석 | 총 소요 | 착수 조건 |
 |---|---|---|---|---|
-| **0** | ~40분 | 10분 | ~50분 | data.zip + annotations.zip ✅ (다운로드 완료) |
-| **1** | ~4시간 | ~4시간 | ~1일 실작업 | data.zip 해제 완료 |
-| **2a** | ~3시간 (4 ablation × 40min) | ~4시간 | ~1일 | Phase 1 완료 + 사용자 sign-off |
-| **2b** | ~14시간 (21 run × 40min) | ~8시간 | ~3일 | Phase 2a 완료 + 사용자 sign-off |
-| **3** | ~1일 (추론 + §19 JS-div + 청취 A/B) | ~1일 | ~3일 | Phase 2 완료, **movies.zip 완료(원본 영화 full playback 검증)** |
+| **0** | 약 40분 | 10분 | 약 50분 | data.zip + annotations.zip ✅ (다운로드 완료) |
+| **1** | 약 4시간 | 약 4시간 | 약 1일 실작업 | data.zip 해제 완료 |
+| **2a** | 약 3시간 (4 ablation × 40min) | 약 4시간 | 약 1일 | Phase 1 완료 + 사용자 sign-off |
+| **2b** | 약 14시간 (21 run × 40min) | 약 8시간 | 약 3일 | Phase 2a 완료 + 사용자 sign-off |
+| **3** | 약 1일 (추론 + §19 JS-div + 청취 A/B) | 약 1일 | 약 3일 | Phase 2 완료, **movies.zip 완료(원본 영화 full playback 검증)** |
 
-**총 compute: ~22시간 / 총 소요: ~3주 (문서 포함)**
+**총 compute: 약 22시간 / 총 소요: 약 3주 (문서 포함)**
 
 **movies.zip 의존성**: Phase 3 샘플 영화 end-to-end 검증에만 필요. Phase 0/1/2는 data.zip 9,800 clip만으로 진행 가능.
 
 ---
 
-## 6. Phase 0 — Sanity Check (~50분)
+## 6. Phase 0 — Sanity Check (약 50분)
 
 ### 6-1. PANNs 4초 입력 품질 (full clip vs 4s crop)
 ```python
@@ -166,7 +166,7 @@ for clip in sampled_10_from_liris_data:
     crop_4s = center_crop(full_audio, 4.0)
     sims.append(cosine_sim(panns(full_audio), panns(crop_4s)))
 ```
-판정: mean ≥ 0.90 OK / 0.80~0.90 주의 / <0.80 대안
+판정: mean ≥ 0.90 OK / 0.80–0.90 주의 / <0.80 대안
 
 ### 6-2. V/A 2D scatter + K=7 centroid GT 분포 (✅ §2-5에 실측 기록 완료)
 
@@ -178,7 +178,7 @@ for clip in sampled_10_from_liris_data:
 
 ---
 
-## 7. Phase 1 — LIRIS 데이터 준비 (~1일 실작업)
+## 7. Phase 1 — LIRIS 데이터 준비 (약 1일 실작업)
 
 1. `unzip LIRIS-ACCEDE-{data,annotations}.zip -d dataset/LIRIS_ACCEDE/`
 2. 메타데이터 파싱 → `liris_metadata.csv`
@@ -316,7 +316,7 @@ KL 대신 JS 선택 이유: symmetric (어느 쪽이 reference인지 무관), bo
 
 ---
 
-## 11. Phase 2a — 근본 설계 ablation (OAT, ~1일)
+## 11. Phase 2a — 근본 설계 ablation (OAT, 약 1일)
 
 **Baseline 2a-0** (사용자 목적에 따라 먼저 실행): **V3.2 원래 설계**
 - V/A 정규화: 전략 A `(v-3)/2`
@@ -337,7 +337,7 @@ KL 대신 JS 선택 이유: symmetric (어느 쪽이 reference인지 무관), bo
 
 ---
 
-## 12. Phase 2b — 하이퍼 튜닝 ablation (OAT, ~3일, 21 run)
+## 12. Phase 2b — 하이퍼 튜닝 ablation (OAT, 약 3일, 21 run)
 
 Baseline 2b-0 = Phase 2a 최종 승자.
 
@@ -364,7 +364,7 @@ Baseline 2b-0 = Phase 2a 최종 승자.
 
 ---
 
-## 13. Phase 3 — 추론/재생 + 최종 평가 (~3일)
+## 13. Phase 3 — 추론/재생 + 최종 평가 (약 3일)
 
 1. Phase 2 최종 모델 확정 → `infer_pseudo::VARIANTS["liris_base"]` 추가
 2. **LIRIS test set (80 unseen films, 4,900 clips) 최종 평가** — film-level bootstrap 95% CI
@@ -404,7 +404,7 @@ Baseline 2b-0 = Phase 2a 최종 승자.
 | # | 리스크 | 대응 |
 |---|---|---|
 | 1 | Valence positive 편향 → JA만 도달 불가 (§2-5 실측) | K=4 default + §19 학술 보고 + §21 K=7 비교 |
-| 2 | Variance threshold | per-axis p75 AND (~6-10% 발동) |
+| 2 | Variance threshold | per-axis p75 AND (약 6-10% 발동) |
 | 3 | PANNs 4초 입력 | Phase 0 sanity |
 | 4 | Overfit (183만 param / 9,800 windows) | Overfit auto-monitor + 증강 4종 + patience 10 |
 | 5 | 외부 OOD 평가 부재 (ID hold-out만) | LIRIS test 80 films로 within-distribution generalization. Cross-dataset OOD는 Future Work |
@@ -412,7 +412,7 @@ Baseline 2b-0 = Phase 2a 최종 승자.
 | 7 | LIRIS split 1:1:2 skew | `--use_full_learning_set` 옵션 |
 | 8 | 증강 효과 약화 | Phase 2b-5 off-ablation |
 | 9 | EQ 프리셋 커버리지 (JA만) | §19 학술 보고 + JS-div 정량 |
-| 10 | **movies.zip 2일 다운로드** | **Phase 0~2는 data.zip만으로 진행, Phase 3 진입 전 완료 확인** (§22) |
+| 10 | **movies.zip 2일 다운로드** | **Phase 0–2는 data.zip만으로 진행, Phase 3 진입 전 완료 확인** (§22) |
 
 ---
 
@@ -429,7 +429,7 @@ V5-final 핵심 교정:
 6. **§22 다운로드 대기 병행 작업 신설**
 7. **§8 전략 B 재실행 주석**
 
-진행 순서: Phase 0 PANNs sanity (30분) → Phase 1 (~1일) → **Phase 2a-0 Baseline (V3.2 원설계) 실행 + 사용자 sign-off** → Phase 2a-1~4 OAT → Phase 2b 하이퍼 → Phase 3 (movies.zip 완료 시점).
+진행 순서: Phase 0 PANNs sanity (30분) → Phase 1 (약 1일) → **Phase 2a-0 Baseline (V3.2 원설계) 실행 + 사용자 sign-off** → Phase 2a-1–4 OAT → Phase 2b 하이퍼 → Phase 3 (movies.zip 완료 시점).
 
 ---
 
@@ -451,7 +451,7 @@ V5-final 핵심 교정:
 
 ### 증강 1: Modality Dropout (model.forward) — p=0.05 default
 ### 증강 2: Feature Noise (model.forward) — σ=0.03 대칭
-### 증강 3: Quadrant Mixup (collate_fn, prob=0.5) — 같은 사분면 쌍, λ~Beta(0.4,0.4) shrink
+### 증강 3: Quadrant Mixup (collate_fn, prob=0.5) — 같은 사분면 쌍, λ\~Beta(0.4,0.4) shrink
 ### 증강 4: Target Shrinkage (collate_fn) — `(v_var>0.117) & (a_var>0.164)` AND 조건, ε=0.05
 
 ### 순서
@@ -543,10 +543,10 @@ js_div = jensenshannon(pred_dist, gt_dist, base=2)  # [0, 1]
 | Phase | 작업 | Compute | 문서/분석 | 누적 |
 |---|---|---|---|---|
 | 0 | PANNs sanity(§2-5 GT 집계 이미 완료) + variance 시각화 | 40분 | 10분 | 50분 |
-| 1 | zip 해제, CSV, split, feature precompute (X-CLIP+PANNs) | 4시간 | 4시간 | ~1일 실작업 |
-| 2a | 4 ablation × 40min (baseline 우선) | 3시간 | 4시간 | ~1일 |
-| 2b | 21 run × 40min | 14시간 | 8시간 | ~3일 |
-| 3 | 추론 + §19 JS-div + 청취 A/B + 보고서 (movies.zip 필요) | 1일 | 2일 | ~3일 |
+| 1 | zip 해제, CSV, split, feature precompute (X-CLIP+PANNs) | 4시간 | 4시간 | 약 1일 실작업 |
+| 2a | 4 ablation × 40min (baseline 우선) | 3시간 | 4시간 | 약 1일 |
+| 2b | 21 run × 40min | 14시간 | 8시간 | 약 3일 |
+| 3 | 추론 + §19 JS-div + 청취 A/B + 보고서 (movies.zip 필요) | 1일 | 2일 | 약 3일 |
 
 **총 compute ≈ 22시간, 총 소요 ≈ 3주**
 
@@ -614,7 +614,7 @@ Phase 2b 이후 역시 단계별 테이블 유지 → 보고서에 그대로 포
 3. Mood Head K 비교 (2a-2)
 4. Audio encoder 비교 (2a-3)
 5. Fusion 비교 (2a-4, 선택)
-6. 하이퍼 튜닝 결과 (2b-1~6)
+6. 하이퍼 튜닝 결과 (2b-1–6)
 7. Phase 3 최종 모델 test 성능 + §19 JS-div + 청취 A/B + 결론
 
 ---
@@ -632,7 +632,7 @@ Phase 2b 이후 역시 단계별 테이블 유지 → 보고서에 그대로 포
 
 ### 22-2. movies.zip 완료 후 가능
 1. **Phase 3 샘플 영화 end-to-end 검증** — full movie로 `analyze → timeline.json → playback → remux` 최종 검증
-2. **청취 A/B 평가** — full movie EQ 적용 결과 3~5명 평가자
+2. **청취 A/B 평가** — full movie EQ 적용 결과 3–5명 평가자
 
 ### 22-3. 권장 진행 순서
 ```
@@ -646,4 +646,4 @@ T+7일 ~ T+14일    — Phase 2b 하이퍼 튜닝 (21 run)
 T+14일 ~ T+17일   — Phase 3 추론 + §19 JS-div + 청취 A/B + 보고서
 ```
 
-**핵심**: movies.zip 2일 대기가 총 일정에 블로킹되지 않음 — Phase 0~2a-0까지 모두 data.zip만으로 진행 가능.
+**핵심**: movies.zip 2일 대기가 총 일정에 블로킹되지 않음 — Phase 0–2a-0까지 모두 data.zip만으로 진행 가능.

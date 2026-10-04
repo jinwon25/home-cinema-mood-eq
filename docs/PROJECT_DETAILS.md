@@ -22,7 +22,7 @@
 ## 2. 분석 요약 (Key Findings)
 
 - **공간 음향 지문 예측(xRIR)** — 스마트폰 LiDAR/RoomPlan + 1회 sweep 녹음으로, **ConvNeXT**(공간 시각) · **ResNet-18**(음향)을 **Cross-Attention**으로 융합해 **1024차원 공간 음향 지문**을 예측. 음향적으로 우수한 스피커 좌표 5곳을 추천한 뒤 Inverse EQ로 자동 보정. → ViT baseline 대비 **C50 Error**에서 유의한 개선(p=0.0085) 확인 후 ConvNeXT 최종 채택.
-- **콘텐츠 인식 동적 EQ(Mood-EQ)** — X-CLIP(시각, 5120d)·PANNs(청각, 2048d) 특징을 **Gate Network**로 가중 융합(Concat·GMU 대비 채택, ablation 근거)하여 **Valence-Arousal 회귀 + Mood Head(K=7)**로 씬 감정 추정. → **Dual-Layer EQ**(Layer1 10-band Peaking EQ + Layer2 Shelf·Reverb·Limiter)로 변환, **Silero VAD 기반 Dialogue Protection**으로 폭발음 씬에서도 대사 명료도 유지.
+- **콘텐츠 인식 동적 EQ(Mood-EQ)** — X-CLIP(시각, 5120d)·PANNs(청각, 2048d) 특징을 **Gate Network**로 가중 융합(Concat·GMU 대비 채택, ablation 근거)하여 **Valence-Arousal 회귀 + Mood Head(K=7)로** 씬 감정 추정. → **Dual-Layer EQ**(Layer1 10-band Peaking EQ + Layer2 Shelf·Reverb·Limiter)로 변환, **Silero VAD 기반 Dialogue Protection**으로 폭발음 씬에서도 대사 명료도 유지.
 - **OOD 일반화 검증** — LIRIS-ACCEDE(160편/9,800 클립) 학습 모델을 **COGNIMUSE 200 클립**(학습 미포함)에서 평가 → mean CCC **0.3781** (V 0.3113 · A 0.4449), 별도 데이터셋에서 관측한 수치이며, 평가 표본과 라벨 분포가 달라 직접적인 성능 유지·향상으로 해석하지 않음.
 - **블라인드 A/B 청취 평가** — 3개 반 **총 40명** 대상으로 원본 vs 시스템 적용본 청취 후 선호 응답: A반 14명 중 10명(71%) · B반 15명 중 14명(93%) · C반 11명 중 8명(73%) → **합계 32/40 = 80% 선호**.
 

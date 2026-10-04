@@ -72,7 +72,7 @@ generate_all_clips(EVALUATION_SET)
 "
 ```
 
-각 씬마다 4개 wav (원본/V3.1/V3.2/Anchor)가 생성됩니다. 총 8~12씬이면 32~48개 클립.
+각 씬마다 4개 wav (원본/V3.1/V3.2/Anchor)가 생성됩니다. 총 8–12씬이면 32–48개 클립.
 
 ## 4단계 — webMUSHRA 서버 실행
 
@@ -91,7 +91,7 @@ http://localhost:8080/?config=mood_eq_test.yaml
 
 평가 흐름:
 1. 첫 페이지 안내 읽기
-2. 각 씬마다 4개 슬라이더(원본/V3.1/V3.2/Anchor)를 0~100점으로 평가
+2. 각 씬마다 4개 슬라이더(원본/V3.1/V3.2/Anchor)를 0–100점으로 평가
    - **평가 기준: "영상의 분위기와 가장 잘 맞는다고 느낀 정도"**
    - 클립을 자유롭게 반복 재생 가능
    - 같은 슬라이더에 여러 번 점수 변경 OK
@@ -123,7 +123,7 @@ python -m model.autoEQ.inference.mushra_analyzer \
 외부 평가자(친구, 동료, 청취 실험 참가자)에게 평가를 부탁할 때:
 
 **Option A. 본인 컴퓨터에서 직접 띄우기** (가장 간단)
-- 위 1~5단계를 본인이 진행
+- 위 1–5단계를 본인이 진행
 - 평가자에게 본인 컴퓨터 앞에 앉혀서 평가
 - 헤드폰 권장 (스피커는 룸 음향 영향)
 
@@ -136,7 +136,7 @@ python -m model.autoEQ.inference.mushra_analyzer \
 - 평가자에게 URL 공유
 - webMUSHRA 결과는 서버에 자동 저장
 
-학사논문/발표 정도 규모라면 **Option A가 가장 합리적**입니다 (5~10명, 본인 입회 하 30분).
+학사논문/발표 정도 규모라면 **Option A가 가장 합리적**입니다 (5–10명, 본인 입회 하 30분).
 
 ---
 
@@ -162,4 +162,4 @@ PHP 서버가 안 켜졌거나 다른 포트를 쓰는 중. `lsof -i :8080`으�
 webMUSHRA는 `service/write.php`를 통해 결과를 저장하는데 PHP 서버 없이 정적 파일 서버(예: `python -m http.server`)로 띄우면 결과 저장이 동작하지 않음. **반드시 `php -S` 사용**.
 
 ### Anchor가 너무 비슷하게 들림
-`mushra_generator.py`의 `make_anchor_eq()`는 저역(B1~B3)에 -6dB cut을 적용. 더 명확한 차이가 필요하면 -10dB로 늘리거나 고역도 같이 cut.
+`mushra_generator.py`의 `make_anchor_eq()`는 저역(B1–B3)에 -6dB cut을 적용. 더 명확한 차이가 필요하면 -10dB로 늘리거나 고역도 같이 cut.

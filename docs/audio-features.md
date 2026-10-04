@@ -69,12 +69,12 @@
 | 파라미터 가변성 | scene 마다 다름 (연속) | mood 분류당 고정 preset |
 
 **핵심 이유**: Phase 4-A 후 실제 영상에서 EQ-only (1×) 의 평균 |gain| 이 0.96 dB —
-**JND (Just-Noticeable Difference, ~1 dB)** 근처라 체감이 약했다. Layer 2 는
+**JND (Just-Noticeable Difference, 약 1 dB)** 근처라 체감이 약했다. Layer 2 는
 이를 **문헌 근거 있는 방향으로만** 증폭한다 (임의 tuning 금지).
 
 > **JND 참고**: Zwicker & Fastl 1990 (*Psychoacoustics: Facts and Models*) —
 > 1 kHz 순음에서 라우드니스 JND 는 약 1 dB, 광대역 음성/음악에서는
-> 상황에 따라 0.5~2 dB. 평균 gain 0.96 dB 는 "정확히 경계에서 작동" —
+> 상황에 따라 0.5–2 dB. 평균 gain 0.96 dB 는 "정확히 경계에서 작동" —
 > 일부 구간은 들리고 일부는 안 들림.
 
 ---
@@ -94,19 +94,19 @@
 ### 2.3 주파수 대역 명명 (업계 관행)
 | 대역 | 주파수 | 음향 특성 |
 |---|---|---|
-| Sub-bass | 20~60 Hz | 저역 압력/visceral (킥드럼, 폭발) |
-| Bass | 60~250 Hz | 기본 저음 (베이스 기타, 남성 보컬 기저) |
-| Low-mid | 250~500 Hz | 따뜻함/풍부함 (첼로, 튜바) |
-| Mid | 500~2 kHz | **음성 명료도 핵심** (모음, 보컬 포먼트 F1/F2) |
-| Upper-mid | 2~4 kHz | **자음·명료도 결정** (보컬 presence) |
-| High | 4~8 kHz | 존재감, 찰기 (심벌 스틱, sibilance) |
-| Air | 8~20 kHz | 공기감, 광택 (현악 harmonic, 샹들리에) |
+| Sub-bass | 20–60 Hz | 저역 압력/visceral (킥드럼, 폭발) |
+| Bass | 60–250 Hz | 기본 저음 (베이스 기타, 남성 보컬 기저) |
+| Low-mid | 250–500 Hz | 따뜻함/풍부함 (첼로, 튜바) |
+| Mid | 500–2 kHz | **음성 명료도 핵심** (모음, 보컬 포먼트 F1/F2) |
+| Upper-mid | 2–4 kHz | **자음·명료도 결정** (보컬 presence) |
+| High | 4–8 kHz | 존재감, 찰기 (심벌 스틱, sibilance) |
+| Air | 8–20 kHz | 공기감, 광택 (현악 harmonic, 샹들리에) |
 
 ### 2.4 Q factor
 - Peaking filter 의 **대역폭 선예도** — Q = f_center / bandwidth
 - Q 크면 좁고 날카로운 boost/cut, 작으면 넓고 부드러움
 - 우리 코드의 Q 값 (`eq_preset.py` L13-24): B1/B2/B9/B10 (극저역·극고역) = 0.7 (광대역),
-  B3 = 1.0, B4 = 1.2, B5~B7 (500/1k/2k Hz) = 1.4 (좁음, 보컬 대역 선택성), B8 (4k) = 1.2
+  B3 = 1.0, B4 = 1.2, B5–B7 (500/1k/2k Hz) = 1.4 (좁음, 보컬 대역 선택성), B8 (4k) = 1.2
 
 ### 2.5 Peaking vs Shelf filter
 - **Peaking** (= Bell): 중심 주파수 주변 종모양으로 boost/cut. 10-band graphic EQ 의 기본 단위
@@ -150,7 +150,7 @@ Amplitude
 ### 3.1 왜 10 band 인가?
 - **ISO R-40 / IEC 61260** 의 1-octave band series 준용:
   31.5, 63, 125, 250, 500, 1k, 2k, 4k, 8k, 16k Hz
-- 인간 가청 대역 (20 Hz~20 kHz) 을 log 스케일로 10 개 등분
+- 인간 가청 대역 (20 Hz약 20 kHz) 을 log 스케일로 10 개 등분
 - 업계 graphic EQ (DJ 믹서, 하이파이 앰프) 의 표준 band 수
 - 10 개는 "너무 조악 (5-band) 과 너무 복잡 (31-band) 의 중간" — **해석 가능한 최소 해상도**
 
@@ -178,10 +178,10 @@ Amplitude
 - idx 5 (1 kHz), 6 (2 kHz), 7 (4 kHz) — **음성 명료도 핵심 대역**
 - 근거:
   - **Fletcher & Galt 1950** (*The perception of speech and its relation to telephony*): 음성 명료도
-    지수(Articulation Index)의 85 % 가 1~4 kHz 대역에서 결정
-  - **ITU-R BS.1534-3** (MUSHRA): 음성 평가 시 500 Hz~5 kHz 가 결정적
+    지수(Articulation Index)의 85 % 가 1–4 kHz 대역에서 결정
+  - **ITU-R BS.1534-3** (MUSHRA): 음성 평가 시 500 Hz약 5 kHz 가 결정적
   - **male vocal F1≈500, F2≈1500, F3≈2500 Hz; female F1≈700, F2≈2200 Hz** — 포먼트 분포
-  - **자음** (voiceless fricative /s/, /f/) 의 주 에너지는 3~6 kHz
+  - **자음** (voiceless fricative /s/, /f/) 의 주 에너지는 3–6 kHz
 
 ### 3.4 EQ Preset Table (`eq_preset.py::EQ_PRESET_TABLE_DB`)
 
@@ -209,13 +209,13 @@ V5-FINAL §6-4 에 고정된 표. 각 mood 당 10 개 dB 값:
     "tense" 감정 descriptor 와 상관
 
 #### Sadness — 슬픔
-- 패턴: 저역 warmth + 고역 전면 cut (−2 ~ −1.5 dB)
+- 패턴: 저역 warmth + 고역 전면 cut (−2–−1.5 dB)
 - 음향 의미: **저역 weight + dull timbre** → 무겁고 어두운 tone
 - 문헌:
   - **Eerola & Vuoskoski 2011** *A comparison of the discrete and dimensional models of emotion in music* (Psychology of Music 39:18-49):
     sad-rated musical excerpts 가 평균적으로 **spectral centroid 낮음** (dull)
   - **Juslin & Laukka 2003** *Communication of emotions in vocal expression and music*
-    (Psychological Bulletin 129:770): 슬픈 발화의 고주파 감소 ~5 dB 관찰
+    (Psychological Bulletin 129:770): 슬픈 발화의 고주파 감소–5 dB 관찰
 
 #### Peacefulness — 평온
 - 패턴: 저역 slight lift + 고역 mild cut
@@ -409,7 +409,7 @@ preset       = base_preset × magnitude         # element-wise scale
 
 #### Phase 6 로 미룬 이유
 
-`live_compare_fx.py` 기반 청취 검증이 선행되어야 "연속화가 실제로 더 좋은가" 를 답할 수 있음. ABX listening test 가 N=5~8 규모로 돌면 그 결과에 따라:
+`live_compare_fx.py` 기반 청취 검증이 선행되어야 "연속화가 실제로 더 좋은가" 를 답할 수 있음. ABX listening test 가 N=5–8 규모로 돌면 그 결과에 따라:
 - argmin 과 blend 간 preference 비교 → 방안 A 도입 여부 결정
 - 방안 C 의 4 base preset 설계 근거 획득 (ABX 결과로 기본 방향 고정)
 
@@ -476,7 +476,7 @@ HighShelfFilter(cutoff_frequency_hz=8000.0, gain_db=...)  # high
   들리지 않는" visceral 대역
 - **200 Hz**: 기본 저음 (bass fundamentals) 과 low-mid 의 경계.
   **ANSI S1.11 octave band** 의 125/250 Hz 사이 중간값. male vocal 기본
-  주파수(F0, ~100~150 Hz) 의 2 차 조화(2·F0) 부근
+  주파수(F0, 약 100–150 Hz) 의 2 차 조화(2·F0) 부근
 - **8000 Hz**: 보컬 sibilance(/s/, /sh/) 가 끝나고 "air band" 가 시작하는 지점.
   **Telephone bandwidth (Nyquist 4 kHz) 의 2 배**, 음성 명료도에 거의 기여하지 않음
 
@@ -486,9 +486,9 @@ HighShelfFilter(cutoff_frequency_hz=8000.0, gain_db=...)  # high
 
 | Shelf | 영향 대역 | 체감 | 대사 명료도 영향 |
 |---|---|---|---|
-| sub-bass (<60 Hz) | 20~60 Hz | visceral impact, 폭발, 심장 진동 | **거의 없음** (대사 대역 200 Hz~4 kHz 밖) |
-| low (<200 Hz) | ~200 Hz 이하 | warmth, fullness, body | 약함 (male F0 ~120 Hz 에 약간 영향) |
-| high (>8 kHz) | 8 kHz~ | air, brilliance, shimmer | **거의 없음** (sibilance 끝난 대역) |
+| sub-bass (<60 Hz) | 20–60 Hz | visceral impact, 폭발, 심장 진동 | **거의 없음** (대사 대역 200 Hz약 4 kHz 밖) |
+| low (<200 Hz) | 약 200 Hz 이하 | warmth, fullness, body | 약함 (male F0–120 Hz 에 약간 영향) |
+| high (>8 kHz) | 8 kHz\~ | air, brilliance, shimmer | **거의 없음** (sibilance 끝난 대역) |
 
 → **대사 보호 관점에서 shelf 는 모두 "대체로 안전"** — 대사 구간 bypass 에서
 shelf 를 유지하는 근거 (`_strip_reverb` 가 shelf 는 보존)
@@ -568,11 +568,11 @@ shelf 를 유지하는 근거 (`_strip_reverb` 가 shelf 는 보존)
 
 | 파라미터 | 의미 | 우리의 설정 |
 |---|---|---|
-| `room_size` | 가상 공간 크기 (0~1) — 반사 밀도/지연 결정 | preset 별 3 단계 |
+| `room_size` | 가상 공간 크기 (0–1) — 반사 밀도/지연 결정 | preset 별 3 단계 |
 | `wet_level` | reverb 신호 비율 (0=없음, 1=100 %) | 0 / 0.10 / 0.20 |
 | `dry_level` | 원본 신호 비율 | 1.00 / 0.90 / 0.85 |
-| `damping` | 고역 감쇠 (0~1, 클수록 고역 빨리 죽음) | **0.5 고정** |
-| `width` | stereo 확산 (0~1) | **1.0 고정** |
+| `damping` | 고역 감쇠 (0–1, 클수록 고역 빨리 죽음) | **0.5 고정** |
+| `width` | stereo 확산 (0–1) | **1.0 고정** |
 | `freeze_mode` | 무한 지속 (1 이면 영원) | **0.0 고정** |
 
 #### 왜 damping, width 를 고정했나?
@@ -585,16 +585,16 @@ shelf 를 유지하는 근거 (`_strip_reverb` 가 shelf 는 보존)
 - `room_size 0.05` / `0.25` / `0.85` 는 pedalboard 의 "거의 off" / "subtle room" /
   "cathedral" 에 대응하는 표준 값
 - `wet_level 0.00 / 0.10 / 0.20` 은 **audio production 업계의 "subtle / moderate" 관행**:
-  pop mix 에서 vocal 에 wet 0.10~0.15, orchestral ambience 에 0.20~0.25 가 전형
+  pop mix 에서 vocal 에 wet 0.10–0.15, orchestral ambience 에 0.20–0.25 가 전형
 - **연속 tuning 회피** — 3 택 이상 세분화하면 작은 차이에 대한 문헌 근거 부재
 
 #### 3 preset 의 음향 해석
 
 | Preset | 체감 T60 (대략) | 청취 위치 은유 | Mood 사용 |
 |---|---|---|---|
-| dry | ~0.1 s (거의 무반향 방) | 헤드폰, 무향실 | Tension, Sadness, Power |
-| small_room | ~0.3~0.5 s | 거실, 침실 | Tenderness, Peacefulness |
-| large_hall | ~2~3 s | 콘서트 홀, 대성당 | Wonder |
+| dry | 약 0.1 s (거의 무반향 방) | 헤드폰, 무향실 | Tension, Sadness, Power |
+| small_room | 약 0.3–0.5 s | 거실, 침실 | Tenderness, Peacefulness |
+| large_hall | 약 2–3 s | 콘서트 홀, 대성당 | Wonder |
 
 > **"체감 T60" 은 pedalboard 구현의 내부 값 — 정확한 decay time 은 wet/dry,
 > damping 과 상호작용하므로 근사치**. 우리는 **실제 T60 을 직접 지정하지 않는다**.
@@ -622,7 +622,7 @@ for scene in timeline:
 
 #### 설계 결정 3 가지
 1. **bypass 대상 = reverb stage 만** (`_strip_reverb`) — shelf 는 유지
-   - 근거: shelf 대역 (60 / 200 / 8 kHz) 은 대사 주 대역 (200 Hz~4 kHz) 과
+   - 근거: shelf 대역 (60 / 200 / 8 kHz) 은 대사 주 대역 (200 Hz약 4 kHz) 과
      거의 겹치지 않음 (§4.1 표 참조). shelf 까지 끄면 배경 mood 가 사라짐
 2. **bypass 단위 = scene 내 정확한 segment** (frame-accurate, 상대시간 기준)
    - 근거: Silero VAD 가 이미 scene 내 상대시간으로 (start, end) pair 저장
@@ -630,8 +630,8 @@ for scene in timeline:
 3. **경계 처리 = 30 ms raised-cosine crossfade**
    - 근거: **raised-cosine** 은 click/pop 방지의 표준 fade 형태 (Rabiner &
      Gold 1975, *Theory and Application of Digital Signal Processing*)
-   - 30 ms 는 pre-echo 한계 (~20 ms) 위, 대사 음소(phoneme) 경계의 자연
-     전이 시간 (~50 ms) 아래 — smooth but not audible as fade
+   - 30 ms 는 pre-echo 한계 (약 20 ms) 위, 대사 음소(phoneme) 경계의 자연
+     전이 시간 (약 50 ms) 아래 — smooth but not audible as fade
    - 공식: `f(t) = 0.5·(1 − cos(π·t/n)), t ∈ [0, n]` — S-curve, 양 극단 flat
 
 #### 실측 효과 (Kakao + synthetic Tenderness mutate)
@@ -696,7 +696,7 @@ Layer 2 FX 의 모든 mood 매핑이 의지하는 peer-reviewed 문헌 6 편 + �
 | # | 저자 & 연도 | 내용 | 우리 적용 |
 |---|---|---|---|
 | 7 | Fletcher & Galt 1950 | *The perception of speech and its relation to telephony*, JASA | Articulation Index → voice-protected bands (1/2/4 kHz) |
-| 8 | Zwicker & Fastl 1990 | *Psychoacoustics: Facts and Models* (Springer) | JND ~1 dB → Layer 2 증폭 필요성 |
+| 8 | Zwicker & Fastl 1990 | *Psychoacoustics: Facts and Models* (Springer) | JND 약 1 dB → Layer 2 증폭 필요성 |
 | 9 | Lin 1989 | *A concordance correlation coefficient to evaluate reproducibility*, Biometrics 45:255 | CCC 평가 지표 (evaluation) |
 | 10 | Bristow-Johnson n.d. | *Audio EQ Cookbook* (공개 reference) | Biquad 계수 수식 |
 | 11 | Blood & Zatorre 2001 | *Intensely pleasurable responses to music correlate with activity in brain regions implicated in reward and emotion*, PNAS 98:11818 | 저역 energy → chills → Power visceral |
@@ -709,9 +709,9 @@ Layer 2 FX 의 모든 mood 매핑이 의지하는 peer-reviewed 문헌 6 편 + �
 
 | 표준 | 내용 | 우리 적용 |
 |---|---|---|
-| ISO R-40 / IEC 61260 | 1-octave band center frequencies | 10-band peaking (31.5~16k Hz) |
+| ISO R-40 / IEC 61260 | 1-octave band center frequencies | 10-band peaking (31.5–16k Hz) |
 | ITU-R BS.1770-4 | Loudness measurement | Limiter release=100 ms 근거 |
-| ITU-R BS.1534-3 MUSHRA | 음성 평가 대역 500 Hz~5 kHz | voice-critical 판정 |
+| ITU-R BS.1534-3 MUSHRA | 음성 평가 대역 500 Hz약 5 kHz | voice-critical 판정 |
 | ANSI S1.11 | Octave-band filter standard | band cutoff 200 Hz 근거 |
 | AES17 | Digital audio engineering | dBFS 정의 |
 | THX Certification | Subwoofer crossover | 60/80 Hz sub-bass 경계 |
@@ -750,7 +750,7 @@ Layer 2 FX 의 모든 mood 매핑이 의지하는 peer-reviewed 문헌 6 편 + �
 | Limiter `threshold` | −0.5 dBFS | AAC intersample peak 안전 마진 (표준 관행) |
 | Limiter `release` | 100 ms | ITU-R BS.1770-4 LRA 호환 |
 | Crossfade 형태 | raised-cosine | Rabiner & Gold 1975, click 방지 표준 |
-| Scene boundary crossfade | 50 ms | pre-echo 한계 (~20 ms) 초과, 청각 지각 단일 이벤트 한계 (~100 ms) 이하 |
+| Scene boundary crossfade | 50 ms | pre-echo 한계 (약 20 ms) 초과, 청각 지각 단일 이벤트 한계 (약 100 ms) 이하 |
 | Dialogue boundary crossfade | 30 ms | 음소 경계 자연 전이 시간 내 |
 
 ---

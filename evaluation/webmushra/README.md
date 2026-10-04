@@ -30,12 +30,12 @@ Ctrl+C로 종료. Threaded TCP 서버라 여러 평가자 동시 제출 안전.
 http://localhost:8765/simple_player_v3.html
 ```
 
-- **4 segment × 4 condition** (단일 점수 / 0~100)
+- **4 segment × 4 condition** (단일 점수 / 0–100)
 - Segments (탑건 풀 트레일러 자동 추출):
-  - Joyful (11~21s) / Power (41~51s) / Peacefulness (80~90s) / Sadness (99~109s)
+  - Joyful (11–21s) / Power (41–51s) / Peacefulness (80–90s) / Sadness (99–109s)
 - Conditions: Reference / Anchor / V3.3 / V3.5.5
-- 블라인드 A~D 매 세션 셔플
-- 즉시 전환 모드 (5ms crossfade) / 키보드 1~4
+- 블라인드 A\~D 매 세션 셔플
+- 즉시 전환 모드 (5ms crossfade) / 키보드 1–4
 
 ### 2.2 Full Trailer 비교
 
@@ -47,7 +47,7 @@ http://localhost:8765/full_trailer_comparison.html
 - Conditions: Reference / Anchor / V3.3 / V3.5.5 / V3.5.6
 - Axes: 선호도(preference) / 명료도(clarity) / 자연스러움(naturalness)
 - 5조건 동기 재생 (SyncEngine, Web Audio BufferSource + GainNode muting)
-- 키보드 1~5 / Space = play/pause / 진행바 클릭 = 동시 seek
+- 키보드 1–5 / Space = play/pause / 진행바 클릭 = 동시 seek
 - 참가자 정보 form (이름 / 이어폰|헤드폰|스피커 / 초심|중간|숙련)
 
 ---

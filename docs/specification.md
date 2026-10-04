@@ -209,12 +209,12 @@ Video (4s window)         Audio (4s window, 16kHz mono)
 
 ### 3-3. Linear Projection + Fusion + Heads (V3.3 최종, 2026-04-20 업데이트)
 
-V3.3 초안은 V3.2의 Gated Weighted Concat + MoodHead 구조를 유지했다. §4-3의 **개별 축 ablation(2026-04-19)**에서 다음이 확인됨:
+V3.3 초안은 V3.2의 Gated Weighted Concat + MoodHead 구조를 유지했다. §4-3의 **개별 축 ablation(2026-04-19)에서** 다음이 확인됨:
 - **Scalar 2-way softmax gate가 small-data(1032 train/fold)에서 over-engineered**이며, GMU(Arevalo 2017) element-wise sigmoid fusion이 9/9 fold에서 우세 (Δ_CCC = +0.044, p=0.091).
 - **PANNs가 AST 대비 baseline 우위** (Δ_CCC = +0.067, p=0.025, σ=OFF 공정 조건).
 - **K=4 quadrant MoodHead 단독 효과 부재** (Δ_CCC = +0.004, p=0.57).
 
-이후 §4-3의 **후속 조합 실측(2026-04-20)**에서 개별로는 유의하지 않던 AST · GMU · multi-task 세 변화를 **함께 적용하면 test 기준 CCC_arousal이 +0.066, 가장 어려운 fold인 valkaama_highlight가 +0.267 회복**하여 test 일반화에서 결정적 이점을 보임이 확인됨 (§4-3 참조). 따라서 V3.3 공식 최종은 **후속 조합**을 채택.
+이후 §4-3의 **후속 조합 실측(2026-04-20)에서** 개별로는 유의하지 않던 AST · GMU · multi-task 세 변화를 **함께 적용하면 test 기준 CCC_arousal이 +0.066, 가장 어려운 fold인 valkaama_highlight가 +0.267 회복**하여 test 일반화에서 결정적 이점을 보임이 확인됨 (§4-3 참조). 따라서 V3.3 공식 최종은 **후속 조합**을 채택.
 
 **V3.3 최종 모델 구조**:
 
@@ -273,9 +273,9 @@ if self.training and feature_noise_std > 0:
 
 ### 4-1. Loss 구성 (V3.3 최종, 2026-04-20 업데이트)
 
-V3.3 초안은 3-term(`L_va + L_mood + L_gate`) 구성이었다. §4-3 **개별 축 ablation(2026-04-19)**에서 multi-task 단독 효과는 무의미(Δ_CCC = +0.004, p=0.57), fusion 교체로 `L_gate` Shannon entropy는 적용 불가로 판정되어 한때 1-term(L_va)으로 축소되었다.
+V3.3 초안은 3-term(`L_va + L_mood + L_gate`) 구성이었다. §4-3 **개별 축 ablation(2026-04-19)에서** multi-task 단독 효과는 무의미(Δ_CCC = +0.004, p=0.57), fusion 교체로 `L_gate` Shannon entropy는 적용 불가로 판정되어 한때 1-term(L_va)으로 축소되었다.
 
-그러나 §4-3 **후속 조합 실측(2026-04-20)**에서 AST 오디오 인코더 · GMU · multi-task 세 변화를 결합할 때 test 기준 CCC_arousal +0.066, valkaama fold +0.267 회복이 확인되어 **mood term을 복원**한다. K=4 quadrant는 V/A 부호 조합에서 파생되지만, AST의 강한 오디오 representation 하에서 **추가 supervision이 shared backbone의 regularization으로 작동**하는 것으로 해석.
+그러나 §4-3 **후속 조합 실측(2026-04-20)에서** AST 오디오 인코더 · GMU · multi-task 세 변화를 결합할 때 test 기준 CCC_arousal +0.066, valkaama fold +0.267 회복이 확인되어 **mood term을 복원**한다. K=4 quadrant는 V/A 부호 조합에서 파생되지만, AST의 강한 오디오 representation 하에서 **추가 supervision이 shared backbone의 regularization으로 작동**하는 것으로 해석.
 
 **V3.3 최종 Loss** (2-term):
 
@@ -319,11 +319,11 @@ Frozen encoder 출력을 그대로 캐시하되, **post-encoder feature space**�
 
 **Mixup 설계 원칙**:
 - 같은 사분면 쌍만 선택 (LVHA+HVHA 혼합 금지 → 감정 의미 모순 방지)
-- λ ~ Beta(α, α) → 0.1 + 0.8·λ로 shrink (λ=0, 1 극단 제거)
+- λ \~ Beta(α, α) → 0.1 + 0.8·λ로 shrink (λ=0, 1 극단 제거)
 - visual·audio·V/A·V_std·A_std 모두 동일 λ로 선형 결합
 - mood label은 primary sample 사용
 
-**권장 효과**: val mean CCC +0.05~0.08 예상 (722 train 데이터 기준 보수 추정)
+**권장 효과**: val mean CCC +0.05–0.08 예상 (722 train 데이터 기준 보수 추정)
 
 ### 4-3. σ-filter (V3.2 확장, train 전용)
 
@@ -436,19 +436,19 @@ Frozen encoder 출력을 그대로 캐시하되, **post-encoder feature space**�
 >
 > **2026-04-20 이전** 본 표에 기록됐던 수치는 `scripts/evaluate_lomo_testsets.py`의 `compute_mean_ccc` 반환 튜플 언패킹 버그로 CCC_V와 CCC_A가 swap되어 보고되었음. 위 표는 수정 후의 올바른 test-set 집계값(`runs/ccmovies_lomo9_sigma_off/lomo_test_report.json` · `runs/ablation_ast_gmu_lomo9_sigma_off/lomo_test_report.json`)과 일치한다.
 >
-> 6/9 folds에서 우위, 특히 **valkaama_highlight**에서 test mean CCC 0.119 → 0.386 (+0.267)으로 극단 distribution-shift(유일 실사 영화) 일반화 회복. 다만 elephants_dream(−0.164)·일부 애니 fold에서 퇴보가 있어 Valence 축 trade-off 존재. mean CCC 개선폭 자체는 +0.014로 n=9 LOMO 유의성(경계 p>0.1) 확보가 어려우므로 **"test 일반화, 특히 Arousal 축에 결정적 이점"**으로 효과 범위를 한정하여 기술한다. Val-기준으로는 `final_gmu_vaonly` (mean CCC 0.5851)가 본 조합(0.5625)보다 미세 우위이나 **test 축과 가장 어려운 fold 회복**을 근거로 본 조합을 공식 최종으로 채택.
+> 6/9 folds에서 우위, 특히 **valkaama_highlight**에서 test mean CCC 0.119 → 0.386 (+0.267)으로 극단 distribution-shift(유일 실사 영화) 일반화 회복. 다만 elephants_dream(−0.164)·일부 애니 fold에서 퇴보가 있어 Valence 축 trade-off 존재. mean CCC 개선폭 자체는 +0.014로 n=9 LOMO 유의성(경계 p>0.1) 확보가 어려우므로 **"test 일반화, 특히 Arousal 축에 결정적 이점"으로** 효과 범위를 한정하여 기술한다. Val-기준으로는 `final_gmu_vaonly` (mean CCC 0.5851)가 본 조합(0.5625)보다 미세 우위이나 **test 축과 가장 어려운 fold 회복**을 근거로 본 조합을 공식 최종으로 채택.
 
 ### 4-4. 하이퍼파라미터 (V3.3 최종, 2026-04-20 업데이트)
 
 | 파라미터 | V3.2 | V3.3 최종 | 이유 / 실측 근거 |
 |---|---|---|---|
 | Optimizer | AdamW | AdamW | |
-| Learning rate | 1e-4 | **1e-4** | 안정 수렴 확인 (loss 7~8배 감소) |
+| Learning rate | 1e-4 | **1e-4** | 안정 수렴 확인 (loss 7–8배 감소) |
 | Weight decay | 1e-5 | **1e-5** (config 기본값 유지) | 실측상 5e-5 불필요, σ=OFF로 train pool이 334→1032로 확장되어 과적합 완화됨 |
 | Batch size | 32 | 32 | steps/epoch ≈ 32 (1032 train / 32 batch) |
-| Epochs | 30-50 | **40** (+ early stop) | 실측 peak val CCC @ avg epoch 17~21, early stop patience 10으로 자동 종료 |
+| Epochs | 30-50 | **40** (+ early stop) | 실측 peak val CCC @ avg epoch 17–21, early stop patience 10으로 자동 종료 |
 | LR scheduler | Cosine | warmup + Cosine | V3.2 §4-5 유지 |
-| Warmup steps | 500 | **500** (config 기본값 유지) | 실측상 전체 ~1280 step 중 500 warmup 정상 작동 |
+| Warmup steps | 500 | **500** (config 기본값 유지) | 실측상 전체–1280 step 중 500 warmup 정상 작동 |
 | Grad clip | max_norm=1.0 | max_norm=1.0 | |
 | Early stopping | val mean_CCC, patience=10 | 동일 **+ (ccc, −mae) tuple** | Pareto-guard |
 | **sigma_filter_threshold** | — | **−1.0 (OFF)** | §4-3 ablation: Δ_CCC = +0.067 (p<0.0001) |
@@ -495,7 +495,7 @@ else:
 
 ### 5-0. 분석-재생 분리 아키텍처 (V3.2 §5-0 유지 + VAD 병렬 보정)
 
-**명세서 V3.2 §5-8-5 원 설계를 정확히 반영**: Silero VAD는 오디오 트랙만 필요하므로 씬 분할/모델 추론과 **독립 병렬 실행**. Python `concurrent.futures.ThreadPoolExecutor`로 2개 thread orchestrate. VAD 처리 시간(10분 영화에 ~10초)이 모델 추론 병목(~2-3분)에 완전히 가려져 **추가 소요 0**.
+**명세서 V3.2 §5-8-5 원 설계를 정확히 반영**: Silero VAD는 오디오 트랙만 필요하므로 씬 분할/모델 추론과 **독립 병렬 실행**. Python `concurrent.futures.ThreadPoolExecutor`로 2개 thread orchestrate. VAD 처리 시간(10분 영화에–10초)이 모델 추론 병목(약 2-3분)에 완전히 가려져 **추가 소요 0**.
 
 ```
                           영상 입력 (movie.mp4)
@@ -626,13 +626,13 @@ def select_eq_preset(va_pred):
 
 모든 밴드 Biquad peaking (Q 값은 V3.1 §6-2 표).
 
-> **V3.3 Phase 1 예산 업데이트 (2026-04-19)**: `scripts/eq_response_check.py`로 정확한 RBJ biquad 주파수 응답을 실측한 결과(pedalboard 실제 출력과 0.1 dB 이내 일치), 누적 피크는 Power +3.93 dB, Tension +3.37 dB, Sadness -3.05 dB, JoyfulActivation +3.09 dB (나머지 3개 카테고리는 ±3 dB 이내)였다. 보완자료 V3.2 §Medium 4는 "1 옥타브 0.4배 근사식"에 기반한 이론 계산의 내재 오차 ±0.3 dB를 이미 인정하고 있었으나, 실측 결과 해당 근사가 Q=0.7 biquad의 실제 응답(0.5~0.6배)을 과소평가했음이 확인되었다.
+> **V3.3 Phase 1 예산 업데이트 (2026-04-19)**: `scripts/eq_response_check.py`로 정확한 RBJ biquad 주파수 응답을 실측한 결과(pedalboard 실제 출력과 0.1 dB 이내 일치), 누적 피크는 Power +3.93 dB, Tension +3.37 dB, Sadness -3.05 dB, JoyfulActivation +3.09 dB (나머지 3개 카테고리는 ±3 dB 이내)였다. 보완자료 V3.2 §Medium 4는 "1 옥타브 0.4배 근사식"에 기반한 이론 계산의 내재 오차 ±0.3 dB를 이미 인정하고 있었으나, 실측 결과 해당 근사가 Q=0.7 biquad의 실제 응답(0.5–0.6배)을 과소평가했음이 확인되었다.
 >
 > V3.1 preset의 **음향학적 근거(Bowling 2017, Arnal 2015, Wallmark 2017 등)를 보존**하기 위해 preset 값은 변경하지 않고, 예산 자체를 **±3 dB → ±3.5 dB**로 재정의한다. ±3.5 dB는 여전히 V3.2 §6-3이 명시한 "음악을 변형하는 수준(±6 dB)"에 크게 미치지 못하는 보수적 범위이며, 영화 theatrical mix의 mood shaping 관행과도 정합한다. 이 재정의는 "정확한 실측으로 근사식의 한계를 발견하여 spec를 업데이트"라는 §Medium 4의 검증 경로 정신과 부합한다.
 >
 > **검증 판정 (Phase 1 완료, ±3.5 dB 기준)**:
 > - **safe (|peak| ≤ 3.5 dB)**: Tension +3.37, Sadness -3.05, Peacefulness -1.30, JoyfulActivation +3.09, Tenderness +2.85, Wonder +2.44 → 6개 카테고리 PASS.
-> - **boundary (3.5 < |peak| ≤ 4.0 dB)**: **Power +3.93 dB** — 보완자료 §Medium 4 tier "boundary" 정의(0.3~0.5 dB 초과)에 해당. Phase 3 청취 검증 결과에 따라 결정: 거슬림 없으면 그대로 유지, 저역 왜곡 관측 시 Power B1 +2.5 → +2.0 한 단계 하향. `scripts/eq_response_check.py --strict`는 VIOLATION tier(|peak| > 4.0 dB)만 실패 처리하며, boundary tier는 PASS*로 통과한다.
+> - **boundary (3.5 < |peak| ≤ 4.0 dB)**: **Power +3.93 dB** — 보완자료 §Medium 4 tier "boundary" 정의(0.3–0.5 dB 초과)에 해당. Phase 3 청취 검증 결과에 따라 결정: 거슬림 없으면 그대로 유지, 저역 왜곡 관측 시 Power B1 +2.5 → +2.0 한 단계 하향. `scripts/eq_response_check.py --strict`는 VIOLATION tier(|peak| > 4.0 dB)만 실패 처리하며, boundary tier는 PASS*로 통과한다.
 > - **violation (|peak| > 4.0 dB)**: 없음.
 
 **대사 보호 공식** (B6/B7/B8만):
@@ -729,7 +729,7 @@ V3.2 §합격 기준의 safety threshold `≥6/7` 을 `ceil(N·6/7)`로 일반�
 | V/A Safety MAE | ≥8/9 folds `max(mae_v, mae_a) ≤ 0.30` | **`≤ 0.55`로 완화** (영화별 arousal MAE variance 반영) |
 | Overall | 4개 모두 PASS | 4개 모두 PASS |
 
-합격선 상향 근거: `runs/ccmovies_lomo9_sigma_off` 실측(mean_CCC 0.541, 9/9 folds `min(ccc) > 0.35`)가 V3.2 기준을 크게 상회하므로 gate를 실측 분포에 맞춰 상향. Safety MAE는 arousal 축이 구조적으로 valence보다 어려워(fold별 MAE_A 0.39~0.53) V3.2 기준 `≤ 0.30`으로는 어떤 fold도 통과 불가 — 현실에 맞게 완화.
+합격선 상향 근거: `runs/ccmovies_lomo9_sigma_off` 실측(mean_CCC 0.541, 9/9 folds `min(ccc) > 0.35`)가 V3.2 기준을 크게 상회하므로 gate를 실측 분포에 맞춰 상향. Safety MAE는 arousal 축이 구조적으로 valence보다 어려워(fold별 MAE_A 0.39–0.53) V3.2 기준 `≤ 0.30`으로는 어떤 fold도 통과 불가 — 현실에 맞게 완화.
 
 **V3.3 공식 최종 (X-CLIP+AST+GMU+MT, `runs/ablation_ast_gmu_lomo9_sigma_off`) 기준 safety 판정**:
 - Primary CCC: **PASS** (val mean_CCC 0.5625 ≥ 0.45 baseline, stretch 0.55 초과)
