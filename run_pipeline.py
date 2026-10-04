@@ -16,10 +16,10 @@ MoodEQ dual-layer 아키텍처 (BASE_MODEL.md §4d Phase 5-A) 를 새 영상에
       run.log
 
 Usage:
-    venv/bin/python run_pipeline.py --video my_movie.mp4
-    venv/bin/python run_pipeline.py --video my_movie.mp4 --name my_movie
-    venv/bin/python run_pipeline.py --video my_movie.mp4 --skip-fx   # Layer 1 만
-    venv/bin/python run_pipeline.py --video my_movie.mp4 --force      # 기존 결과 덮어쓰기
+    python run_pipeline.py --video my_movie.mp4
+    python run_pipeline.py --video my_movie.mp4 --name my_movie
+    python run_pipeline.py --video my_movie.mp4 --skip-fx   # Layer 1 만
+    python run_pipeline.py --video my_movie.mp4 --force      # 기존 결과 덮어쓰기
 
 주의:
     - 실서빙 기본값은 **BASE FROZEN 3-seed ensemble** (BASE_MODEL.md §4b):
@@ -75,7 +75,7 @@ def step_infer_pseudo(
 ) -> None:
     """Step 1: infer_pseudo CLI 호출 (3-seed ensemble)."""
     cmd = [
-        "venv/bin/python", "-m", "model.autoEQ.infer_pseudo.cli",
+        sys.executable, "-m", "model.autoEQ.infer_pseudo.cli",
         "--video", str(video),
         "--ckpt_paths", *[str(p) for p in ckpts],
         "--output", str(timeline_out),

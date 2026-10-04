@@ -23,6 +23,11 @@ Pillow               # CLIP 키프레임 이미지 처리
 # --- 수치/데이터 처리 ---
 numpy
 scipy                # PSD 검증, 통계
+pyloudnorm           # 청취 평가의 음량 일치
+pystoi               # STOI/ESTOI 객관 지표
+timm                 # 학습 백본
+einops               # 모델 텐서 변환
+auraloss             # 학습 손실
 pandas               # MUSHRA 결과 분석
 
 # --- 시각화 ---
